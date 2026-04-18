@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MenuFlow • QR Restaurant SaaS | Smart Ordering for Modern Restaurants</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fcf9f6;
+      color: #1e1b18;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideRight {
+      0% { opacity: 0; transform: translateX(-40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0e4d8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #b5834a, #8b5e2e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #3a2c21;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #b5834a; }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      margin-left: 20px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid #d4c0ae;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #b5834a;
+      color: white;
+      border-color: #b5834a;
+    }
+
+    .btn-primary {
+      background: #1e1b18;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      background: #b5834a;
+      transform: translateY(-3px);
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 70px 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: #1e1812;
+    }
+
+    .hero-highlight {
+      color: #b5834a;
+      border-bottom: 4px solid #e9cfb5;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #5e4d3c;
+      margin-bottom: 32px;
+    }
+
+    .hero-image {
+      background: url('https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;
+      border-radius: 48px;
+      height: 420px;
+      box-shadow: 0 30px 40px -15px rgba(0,0,0,0.2);
+      border: 4px solid white;
+      animation: scaleIn 1s ease;
+    }
+
+    /* stats */
+    .stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .stat-item h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #2c1f14;
+    }
+
+    /* features */
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: '';
+      width: 80px;
+      height: 5px;
+      background: #b5834a;
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 10px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+      margin: 70px 0;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 36px 28px;
+      border-radius: 36px;
+      box-shadow: 0 20px 30px -8px rgba(0,0,0,0.05);
+      border: 1px solid #f1e6dc;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 30px 40px -12px rgba(180,130,70,0.15);
+      border-color: #d4b696;
+    }
+
+    .feature-icon {
+      font-size: 2.8rem;
+      color: #b5834a;
+      margin-bottom: 24px;
+    }
+
+    /* pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin: 50px 0;
+    }
+
+    .pricing-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 48px;
+      border: 1px solid #f0e4d8;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid #b5834a;
+      box-shadow: 0 30px 40px -12px #b5834a40;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #1e1812;
+      margin: 20px 0;
+    }
+
+    .badge {
+      background: #b5834a;
+      color: white;
+      padding: 4px 16px;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      position: absolute;
+      top: -12px;
+      right: 30px;
+    }
+
+    /* founder section */
+    .founder-section {
+      background: linear-gradient(145deg, #ffffff 0%, #faf3ec 100%);
+      border-radius: 60px;
+      padding: 50px 50px;
+      margin: 80px 0;
+      display: flex;
+      gap: 50px;
+      align-items: center;
+      border: 1px solid #e9d9cb;
+    }
+
+    .founder-badge {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge-iit {
+      background: #7c3a2d;
+      color: white;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .contact-links i {
+      margin-right: 8px;
+      color: #b5834a;
+    }
+
+    /* footer */
+    footer {
+      border-top: 1px solid #e9d9cb;
+      padding: 40px 0;
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      color: #6b5848;
+    }
+
+    @media (max-width: 800px) {
+      .navbar { flex-direction: column; gap: 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .founder-section { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="logo"><i class="fas fa-qrcode" style="margin-right: 8px;"></i>SOBER</div>
+  <div class="nav-links">
+    <a href="#features" data-i18n="nav_features">Features</a>
+    <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+    <a href="#founder" data-i18n="nav_founder">Founder</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+    </div>
+    <a href="/owner-dashboard" class="btn-primary"><i class="fas fa-arrow-right"></i> <span data-i18n="dashboard_btn">Owner Dashboard</span></a>
+  </div>
+</nav>
+
+<main class="container">
+  <!-- Hero -->
+  <section class="hero reveal">
+    <div>
+      <h1 data-i18n="hero_title">Turn every table into a <span class="hero-highlight">digital menu</span> — no waiters needed</h1>
+      <p data-i18n="hero_sub">QR ordering that cuts costs, speeds service, and grows revenue. Trusted by 25+ restaurants across Uzbekistan.</p>
+      <div class="stats">
+        <div class="stat-item"><h3>₹20K+</h3><span data-i18n="stat1">monthly recurring</span></div>
+        <div class="stat-item"><h3>500+</h3><span data-i18n="stat2">restaurants in Samarkand</span></div>
+      </div>
+      <div style="margin-top: 30px;">
+        <a href="/demo" class="btn-primary" style="margin-right: 16px;"><i class="fas fa-play"></i> <span data-i18n="demo_btn">Live Demo</span></a>
+        <a href="#pricing" style="color:#3a2c21; font-weight:600;"><span data-i18n="pricing_link">View pricing →</span></a>
+      </div>
+    </div>
+    <div class="hero-image"></div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <h2 class="section-title reveal" data-i18n="features_title">Why restaurants choose MenuFlow</h2>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+        <h3 data-i18n="feat1_title">QR per table</h3>
+        <p data-i18n="feat1_desc">Unique QR for every table — scan, browse, order in seconds.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-language"></i></div>
+        <h3 data-i18n="feat2_title">UZ • RU • EN</h3>
+        <p data-i18n="feat2_desc">Trilingual menu out of the box. Default Uzbek, switch anytime.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+        <h3 data-i18n="feat3_title">Owner Dashboard</h3>
+        <p data-i18n="feat3_desc">Live orders, revenue analytics, popular items — all in real time.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+        <h3 data-i18n="feat4_title">Click • Payme • Cash</h3>
+        <p data-i18n="feat4_desc">Integrate local payments easily. First month free trial.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <h2 class="section-title reveal" data-i18n="pricing_title">Simple, transparent pricing</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <h3 data-i18n="plan1_name">Starter</h3>
+        <div class="price">₹999<span style="font-size:1rem;">/mo</span></div>
+        <p data-i18n="plan1_desc">Perfect for small cafes</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan1_feat1">Up to 50 orders/day</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan1_feat2">Basic analytics</span></li>
+        </ul>
+        <a href="#" class="btn-primary" style="display:block; text-align:center;" data-i18n="get_started">Get started</a>
+      </div>
+      <div class="pricing-card featured reveal">
+        <span class="badge" data-i18n="popular_badge">MOST POPULAR</span>
+        <h3 data-i18n="plan2_name">Professional</h3>
+        <div class="price">₹1,999<span style="font-size:1rem;">/mo</span></div>
+        <p data-i18n="plan2_desc">For growing restaurants</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat1">Unlimited orders</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat2">Advanced dashboard</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat3">Payment integrations</span></li>
+        </ul>
+        <a href="#" class="btn-primary" style="display:block; text-align:center;" data-i18n="start_trial">Start 30-day trial</a>
+      </div>
+      <div class="pricing-card reveal">
+        <h3 data-i18n="plan3_name">Enterprise</h3>
+        <div class="price" data-i18n="plan3_price">Custom</div>
+        <p data-i18n="plan3_desc">Multi‑location chains</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat1">Dedicated support</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat2">Custom integrations</span></li>
+        </ul>
+        <a href="#" class="btn-primary" style="display:block; text-align:center;" data-i18n="contact_sales">Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder section (Shahzada Moon) -->
+  <section id="founder">
+    <div class="founder-section reveal">
+      <div style="flex:1;">
+        <div class="founder-badge">
+          <span class="badge-iit"><i class="fas fa-graduation-cap"></i> IIT Madras B.S. Data Science</span>
+          <span class="badge-iit"><i class="fas fa-code"></i> Full‑Stack & AI</span>
+        </div>
+        <h2 style="font-size: 2.5rem; margin: 25px 0 20px;">Shahzada Moon</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 20px; color: #4a3a2c;"><i class="fas fa-map-pin"></i> Ghaziabad, India • Building scalable SaaS for restaurants</p>
+        <p style="margin-bottom: 25px;">Full‑Stack Web Developer, Data Analyst & DevOps Engineer. Creator of AgentForce CRM, SOBER B2B Platform, and MenuFlow. Experienced in Flask, React, Power BI, and AI agents.</p>
+        <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+          <div class="contact-links"><i class="fas fa-envelope"></i> 23f2002668@ds.study.iitm.ac.in</div>
+          <div class="contact-links"><i class="fas fa-phone"></i> +91 8126524809</div>
+          <div class="contact-links"><i class="fab fa-github"></i> 23f2002668</div>
+        </div>
+        <div style="margin-top: 30px;">
+          <a href="https://23f2002668.github.io/Portfolio/" target="_blank" style="color:#b5834a; font-weight:600;"><i class="fas fa-external-link-alt"></i> Portfolio & projects</a>
+        </div>
+      </div>
+      <div style="flex:0.8; background:#e7d9cc; border-radius: 40px; padding: 30px; text-align:center;">
+        <i class="fas fa-trophy" style="font-size: 3rem; color:#8b5e2e;"></i>
+        <h3 style="margin: 20px 0;">Achievements</h3>
+        <ul style="text-align:left;">
+          <li>🏅 Merit Cum Means CSR Scholarship – IIT Madras</li>
+          <li>📊 Power BI Workshop Excellence (99/100) – IIT Madras</li>
+          <li>🤖 Microsoft AI Unlocked 2026 – AgentForce CRM</li>
+          <li>📈 Data Analytics Simulation – Deloitte</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="container">
+  <div>© 2026 MenuFlow — Shahzada Moon. Built for Samarkand restaurants.</div>
+  <div><i class="fab fa-linkedin"></i> <i class="fab fa-github"></i></div>
+</footer>
+
+<script>
+  (function() {
+    // ---- 🌍 MULTI-LANGUAGE ----
+    const translations = {
+      en: {
+        nav_features: "Features", nav_pricing: "Pricing", nav_founder: "Founder",
+        dashboard_btn: "Owner Dashboard",
+        hero_title: "Turn every table into a <span class='hero-highlight'>digital menu</span> — no waiters needed",
+        hero_sub: "QR ordering that cuts costs, speeds service, and grows revenue. Trusted by 25+ restaurants across Uzbekistan.",
+        stat1: "monthly recurring", stat2: "restaurants in Samarkand",
+        demo_btn: "Live Demo", pricing_link: "View pricing →",
+        features_title: "Why restaurants choose MenuFlow",
+        feat1_title: "QR per table", feat1_desc: "Unique QR for every table — scan, browse, order in seconds.",
+        feat2_title: "UZ • RU • EN", feat2_desc: "Trilingual menu out of the box. Default Uzbek, switch anytime.",
+        feat3_title: "Owner Dashboard", feat3_desc: "Live orders, revenue analytics, popular items — all in real time.",
+        feat4_title: "Click • Payme • Cash", feat4_desc: "Integrate local payments easily. First month free trial.",
+        pricing_title: "Simple, transparent pricing",
+        plan1_name: "Starter", plan1_desc: "Perfect for small cafes", plan1_feat1: "Up to 50 orders/day", plan1_feat2: "Basic analytics",
+        plan2_name: "Professional", plan2_desc: "For growing restaurants", plan2_feat1: "Unlimited orders", plan2_feat2: "Advanced dashboard", plan2_feat3: "Payment integrations",
+        plan3_name: "Enterprise", plan3_price: "Custom", plan3_desc: "Multi‑location chains", plan3_feat1: "Dedicated support", plan3_feat2: "Custom integrations",
+        popular_badge: "MOST POPULAR", get_started: "Get started", start_trial: "Start 30-day trial", contact_sales: "Contact sales"
+      },
+      uz: {
+        nav_features: "Xususiyatlar", nav_pricing: "Narxlar", nav_founder: "Asoschi",
+        dashboard_btn: "Owner paneli",
+        hero_title: "Har bir stolni <span class='hero-highlight'>raqamli menyu</span>ga aylantiring — ofitsiantlar kerak emas",
+        hero_sub: "Xarajatlarni kamaytiradigan, xizmatni tezlashtiradigan QR buyurtma tizimi. O'zbekiston bo'ylab 25+ restoran ishonadi.",
+        stat1: "oylik daromad", stat2: "Samarqanddagi restoranlar",
+        demo_btn: "Demo ko'rish", pricing_link: "Narxlar →",
+        features_title: "Nima uchun restoranlar MenuFlow’ni tanlaydi",
+        feat1_title: "Har stolga QR", feat1_desc: "Har bir stol uchun noyob QR — skanerlang, menyuni ko'ring, buyurtma bering.",
+        feat2_title: "O'Z • RU • EN", feat2_desc: "Uch tilda menyu. Standart o'zbekcha, istalgan vaqt o'zgartiriladi.",
+        feat3_title: "Owner Dashboard", feat3_desc: "Jonli buyurtmalar, daromad tahlili, mashhur taomlar — real vaqtda.",
+        feat4_title: "Click • Payme • Naqd", feat4_desc: "Mahalliy to'lovlarni oson integratsiya qiling. Birinchi oy bepul.",
+        pricing_title: "Oddiy, shaffof narxlar",
+        plan1_name: "Starter", plan1_desc: "Kichik kafelar uchun", plan1_feat1: "50 ta buyurtma/kun", plan1_feat2: "Asosiy analitika",
+        plan2_name: "Professional", plan2_desc: "O'sayotgan restoranlar", plan2_feat1: "Cheksiz buyurtmalar", plan2_feat2: "Kengaytirilgan dashboard", plan2_feat3: "To'lov integratsiyalari",
+        plan3_name: "Enterprise", plan3_price: "Shartnoma", plan3_desc: "Ko'p filialli tarmoqlar", plan3_feat1: "Maxsus qo'llab-quvvatlash", plan3_feat2: "Maxsus integratsiyalar",
+        popular_badge: "ENG OMMABOP", get_started: "Boshlash", start_trial: "30 kunlik sinov", contact_sales: "Bog'lanish"
+      },
+      ru: {
+        nav_features: "Функции", nav_pricing: "Цены", nav_founder: "Основатель",
+        dashboard_btn: "Панель владельца",
+        hero_title: "Превратите каждый стол в <span class='hero-highlight'>цифровое меню</span> — без официантов",
+        hero_sub: "QR‑заказы сокращают расходы и ускоряют обслуживание. Более 25 ресторанов в Узбекистане доверяют нам.",
+        stat1: "ежемесячный доход", stat2: "ресторанов в Самарканде",
+        demo_btn: "Демо", pricing_link: "Цены →",
+        features_title: "Почему рестораны выбирают MenuFlow",
+        feat1_title: "QR на каждый стол", feat1_desc: "Уникальный QR для каждого стола — сканируйте и заказывайте.",
+        feat2_title: "UZ • RU • EN", feat2_desc: "Меню на трёх языках. По умолчанию узбекский.",
+        feat3_title: "Панель владельца", feat3_desc: "Заказы в реальном времени, аналитика, популярные блюда.",
+        feat4_title: "Click • Payme • Наличные", feat4_desc: "Интеграция локальных платежей. Первый месяц бесплатно.",
+        pricing_title: "Простые и прозрачные тарифы",
+        plan1_name: "Старт", plan1_desc: "Для небольших кафе", plan1_feat1: "До 50 заказов/день", plan1_feat2: "Базовая аналитика",
+        plan2_name: "Профи", plan2_desc: "Для растущих ресторанов", plan2_feat1: "Безлимитные заказы", plan2_feat2: "Расширенная панель", plan2_feat3: "Интеграция платежей",
+        plan3_name: "Корпоративный", plan3_price: "Договорная", plan3_desc: "Сети ресторанов", plan3_feat1: "Персональная поддержка", plan3_feat2: "Кастомные интеграции",
+        popular_badge: "ПОПУЛЯРНО", get_started: "Начать", start_trial: "30 дней бесплатно", contact_sales: "Связаться"
+      }
+    };
+
+    let currentLang = 'en';
+    const langBtns = document.querySelectorAll('.lang-btn');
+    
+    function updateContent(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          if (key === 'hero_title') el.innerHTML = t[key]; // allows span
+          else el.textContent = t[key];
+        }
+      });
+      // update active button
+      langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.dataset.lang === lang) btn.classList.add('active');
+      });
+      currentLang = lang;
+      localStorage.setItem('menuflow_lang', lang);
+    }
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => updateContent(btn.dataset.lang));
+    });
+
+    // scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    // set default lang from localStorage or browser
+    const saved = localStorage.getItem('menuflow_lang') || 'en';
+    updateContent(saved);
+    
+    // demo buttons
+    document.querySelectorAll('.btn-primary[href="/demo"]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); alert('Demo restaurant: table 5 • scan QR experience'); });
+    });
+  })();
+</script>
+</body>
+</html>

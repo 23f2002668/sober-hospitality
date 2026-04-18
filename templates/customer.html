@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Samarqand Osh Markazi</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf7f2;
+      color: #2e241e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* animations */
+    @keyframes floatIn {
+      0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateX(-20px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes softGlow {
+      0% { box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+      50% { box-shadow: 0 20px 30px -8px rgba(218, 165, 32, 0.15); }
+      100% { box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+    }
+
+    .animate-float {
+      animation: floatIn 0.8s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* restaurant ambiance — parallax & hero */
+    .hero {
+      position: relative;
+      min-height: 75vh;
+      background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 70%),
+                  url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      align-items: flex-end;
+      padding: 2rem 2rem 4rem;
+      color: white;
+      border-radius: 0 0 0px 0px;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        min-height: 55vh;
+        background-attachment: scroll;
+        padding: 1.5rem;
+      }
+    }
+
+    .hero-content {
+      max-width: 800px;
+      animation: fadeSlide 0.9s ease-out;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 10vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      font-weight: 400;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 60px;
+      border-left: 4px solid #e4b87b;
+    }
+
+    /* language switcher */
+    .lang-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 1rem 2rem;
+      background: transparent;
+      position: relative;
+      z-index: 5;
+      margin-top: 0px;
+    }
+
+    .lang-btn {
+      background: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #3a2c24;
+      border: 1px solid rgba(0,0,0,0.05);
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .lang-btn i {
+      font-size: 1.1rem;
+    }
+
+    .lang-btn.active {
+      background: #c79a5e;
+      color: white;
+      border-color: #b5834a;
+      box-shadow: 0 10px 18px -6px #b5834a60;
+    }
+
+    .lang-btn:hover {
+      transform: scale(1.02);
+      background: #e7d6c0;
+    }
+
+    /* container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+    }
+
+    /* section titles */
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.8rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 70%;
+      height: 5px;
+      background: linear-gradient(90deg, #c79a5e, #f3d9b1);
+      border-radius: 10px;
+    }
+
+    /* menu grid — dishes cards */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin: 2.5rem 0;
+    }
+
+    .dish-card {
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px -8px rgba(0,0,0,0.08);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+      border: 1px solid #f1ebe4;
+      animation: softGlow 4s infinite ease-in-out;
+      transform: translateY(0);
+    }
+
+    .dish-card:hover {
+      transform: translateY(-10px) scale(1.01);
+      box-shadow: 0 28px 40px -14px rgba(180, 120, 60, 0.25);
+      border-color: #e2cfb6;
+    }
+
+    .card-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      transition: transform 0.7s;
+    }
+    .dish-card:hover .card-img {
+      transform: scale(1.04);
+    }
+
+    .card-img .price-tag {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: #1e1a16;
+      color: #fbe9d2;
+      padding: 8px 18px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      backdrop-filter: blur(6px);
+      background: rgba(20, 15, 10, 0.8);
+      border: 1px solid #ceb18b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .card-content {
+      padding: 24px 20px 22px;
+    }
+
+    .dish-name {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: #2b1f16;
+    }
+
+    .dish-desc {
+      color: #6b5848;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .order-btn {
+      background: #f5ede3;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #3d2c1c;
+      border: 1px solid #ddcdbb;
+    }
+
+    .order-btn i {
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
+
+    .order-btn:hover {
+      background: #c79a5e;
+      color: white;
+      border-color: #b5834a;
+    }
+    .order-btn:hover i {
+      transform: translateX(6px);
+    }
+
+    /* interior showcase — "restaurant just like real" */
+    .interior-showcase {
+      margin: 60px 0 30px;
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 10px 0 25px;
+      scrollbar-width: thin;
+      scrollbar-color: #c79a5e #ede0d4;
+    }
+    .interior-showcase::-webkit-scrollbar {
+      height: 6px;
+    }
+    .interior-showcase::-webkit-scrollbar-thumb {
+      background: #c79a5e;
+      border-radius: 10px;
+    }
+
+    .interior-card {
+      min-width: 300px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      border-radius: 40px;
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 20px 30px -8px rgba(0,0,0,0.2);
+      position: relative;
+      transition: all 0.4s;
+      border: 3px solid rgba(255,255,240,0.6);
+    }
+
+    .interior-card:hover {
+      transform: scale(1.02);
+      border-color: #e4b87b;
+    }
+
+    .interior-label {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(12px);
+      padding: 8px 22px;
+      border-radius: 60px;
+      color: white;
+      font-weight: 500;
+      border-left: 5px solid #eac194;
+    }
+
+    /* footer / cart mock */
+    .cart-preview {
+      margin-top: 40px;
+      background: white;
+      border-radius: 60px 60px 30px 30px;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.03);
+      border: 1px solid #eee5db;
+    }
+
+    .cart-info i {
+      font-size: 2rem;
+      color: #b5834a;
+      margin-right: 15px;
+    }
+
+    .view-cart {
+      background: #2e241e;
+      color: white;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 12px 20px -8px #2e241e70;
+    }
+    .view-cart:hover {
+      background: #4f3e32;
+      transform: scale(1.02);
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.4rem; }
+      .lang-bar { padding: 0.8rem 1rem; }
+      .section-title { font-size: 2rem; }
+    }
+
+    /* loading animation for cards */
+    .stagger-item { opacity: 0; }
+  </style>
+</head>
+<body>
+
+<!-- Language Switcher (Uzbek default) -->
+<div class="lang-bar">
+  <button class="lang-btn active" id="langUz"><i class="fas fa-globe"></i> O'zbekcha</button>
+  <button class="lang-btn" id="langRu"><i class="fas fa-language"></i> Русский</button>
+  <button class="lang-btn" id="langEn"><i class="fas fa-flag-usa"></i> English</button>
+</div>
+
+<!-- Hero Section: shows restaurant ambiance "like real" -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 id="restoName">Samarqand Osh Markazi</h1>
+    <p id="heroTagline">An'anaviy ta'm · Jonli muhit · 24 yillik tajriba</p>
+  </div>
+</section>
+
+<main class="container">
+  <!-- Interior scrolling showcase — "showing restaurants just like real" -->
+  <div class="reveal">
+    <h2 class="section-title" id="interiorTitle">🍽️ Restoran ichki ko'rinishi</h2>
+  </div>
+  <div class="interior-showcase reveal">
+    <div class="interior-card" style="background-image: url('https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <span class="interior-label">🌿 Yozgi ayvon</span>
+    </div>
+    <div class="interior-card" style="background-image: url('https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <span class="interior-label">🪑 Milliy zal</span>
+    </div>
+    <div class="interior-card" style="background-image: url('https://images.pexels.com/photos/2252282/pexels-photo-2252282.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <span class="interior-label">🍢 Oshxona ko'rinishi</span>
+    </div>
+    <div class="interior-card" style="background-image: url('https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <span class="interior-label">✨ VIP xona</span>
+    </div>
+  </div>
+
+  <!-- Menu heading with language -->
+  <div class="reveal" style="margin-top: 30px;">
+    <h2 class="section-title" id="menuHeading">🍛 Taomlarimiz</h2>
+  </div>
+
+  <!-- Dishes grid — will be injected via JS with translations -->
+  <div id="menuContainer" class="menu-grid"></div>
+
+  <!-- Cart preview (static design, fits QR ordering) -->
+  <div class="cart-preview reveal">
+    <div class="cart-info">
+      <i class="fas fa-shopping-basket"></i>
+      <span id="cartText" style="font-weight: 500; font-size: 1.2rem;">Savatda 3 ta taom · 145,000 so'm</span>
+    </div>
+    <button class="view-cart" id="cartBtn"><i class="fas fa-arrow-right"></i> <span id="cartBtnText">Buyurtma berish</span></button>
+  </div>
+</main>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ---------- 🌍 MULTI-LANGUAGE DATA ----------
+    const translations = {
+      uz: {
+        restoName: 'Samarqand Osh Markazi',
+        heroTagline: 'Anʼanaviy taʼm · Jonli muhit · 24 yillik tajriba',
+        interiorTitle: '🍽️ Restoran ichki koʻrinishi',
+        menuHeading: '🍛 Taomlarimiz',
+        cartText: 'Savatda 3 ta taom · 145,000 soʻm',
+        cartBtn: 'Buyurtma berish',
+        // interior labels (static but we can change)
+        interiorLabels: ['🌿 Yozgi ayvon', '🪑 Milliy zal', '🍢 Oshxona koʻrinishi', '✨ VIP xona'],
+        // dish data (will be generated)
+      },
+      ru: {
+        restoName: 'Самаркандский Ош Центр',
+        heroTagline: 'Традиционный вкус · Живая атмосфера · 24 года опыта',
+        interiorTitle: '🍽️ Интерьер ресторана',
+        menuHeading: '🍛 Наши блюда',
+        cartText: 'В корзине 3 блюда · 145,000 сум',
+        cartBtn: 'Оформить заказ',
+        interiorLabels: ['🌿 Летняя терраса', '🪑 Национальный зал', '🍢 Вид на кухню', '✨ VIP комната'],
+      },
+      en: {
+        restoName: 'Samarkand Osh Centre',
+        heroTagline: 'Traditional taste · Lively ambiance · 24 years of heritage',
+        interiorTitle: '🍽️ Restaurant Interior',
+        menuHeading: '🍛 Our Dishes',
+        cartText: '3 items in cart · 145,000 UZS',
+        cartBtn: 'Place Order',
+        interiorLabels: ['🌿 Summer Terrace', '🪑 National Hall', '🍢 Kitchen View', '✨ VIP Room'],
+      }
+    };
+
+    // ---------- 🍲 DISHES DATABASE (multilingual) ----------
+    const dishes = [
+      {
+        id: 1,
+        img: 'https://images.pexels.com/photos/5419336/pexels-photo-5419336.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '55,000',
+        name: { uz: 'Samarqand Palovi', ru: 'Самаркандский Плов', en: 'Samarkand Pilaf' },
+        desc: {
+          uz: 'Yogʻli qoʻy goʻshti, sabzi, guruch — anʼanaviy tandirda',
+          ru: 'Жирная баранина, морковь, рис — в традиционной печи',
+          en: 'Fatty lamb, carrots, rice — cooked in traditional oven'
+        }
+      },
+      {
+        id: 2,
+        img: 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '38,000',
+        name: { uz: 'Mastava', ru: 'Мастава', en: 'Mastava Soup' },
+        desc: {
+          uz: 'Guruchli, sabzavotli quyuq shoʻrva, qaymoq bilan',
+          ru: 'Густой суп с рисом и овощами, со сметаной',
+          en: 'Thick rice & vegetable soup, served with sour cream'
+        }
+      },
+      {
+        id: 3,
+        img: 'https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '42,000',
+        name: { uz: 'Qozon Kabob', ru: 'Казан-Кебаб', en: 'Kazan Kebab' },
+        desc: {
+          uz: 'Goʻsht, kartoshka, piyoz — qozonda dimlangan',
+          ru: 'Мясо, картофель, лук — томленые в казане',
+          en: 'Meat, potatoes, onions — slow-cooked in a cauldron'
+        }
+      },
+      {
+        id: 4,
+        img: 'https://images.pexels.com/photos/12737660/pexels-photo-12737660.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '28,000',
+        name: { uz: 'Somsa (4 dona)', ru: 'Самса (4 шт)', en: 'Samsa (4 pcs)' },
+        desc: {
+          uz: 'Tandirda pishgan qatlamali somsa, goʻshtli',
+          ru: 'Слоеная самса из тандыра с мясом',
+          en: 'Layered tandoori samsa with meat filling'
+        }
+      },
+      {
+        id: 5,
+        img: 'https://images.pexels.com/photos/1123260/pexels-photo-1123260.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '32,000',
+        name: { uz: 'Lagʻmon', ru: 'Лагман', en: 'Lagman' },
+        desc: {
+          uz: 'Qoʻlda tortilgan uzun lagʻmon, mol goʻshti bilan',
+          ru: 'Тянутая лапша ручной работы с говядиной',
+          en: 'Hand-pulled noodles with beef & vegetables'
+        }
+      },
+      {
+        id: 6,
+        img: 'https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=400',
+        price: '25,000',
+        name: { uz: 'Achchiq-chuchuk', ru: 'Аччик-чучук', en: 'Achchik-Chuchuk' },
+        desc: {
+          uz: 'Pomidor, bodring, piyoz, koʻkatlardan salat',
+          ru: 'Салат из помидоров, огурцов, лука и зелени',
+          en: 'Fresh tomato, cucumber, onion & herb salad'
+        }
+      }
+    ];
+
+    // ---------- DOM elements ----------
+    const langUz = document.getElementById('langUz');
+    const langRu = document.getElementById('langRu');
+    const langEn = document.getElementById('langEn');
+    const menuContainer = document.getElementById('menuContainer');
+
+    // Text elements with IDs
+    const restoNameEl = document.getElementById('restoName');
+    const heroTaglineEl = document.getElementById('heroTagline');
+    const interiorTitleEl = document.getElementById('interiorTitle');
+    const menuHeadingEl = document.getElementById('menuHeading');
+    const cartTextEl = document.getElementById('cartText');
+    const cartBtnText = document.getElementById('cartBtnText');
+
+    // interior labels (4 items)
+    const interiorLabelSpans = document.querySelectorAll('.interior-label');
+
+    let currentLang = 'uz'; // default uzbek
+
+    // ---------- RENDER DISHES based on language ----------
+    function renderMenu(lang) {
+      let html = '';
+      dishes.forEach(dish => {
+        const name = dish.name[lang];
+        const desc = dish.desc[lang];
+        html += `
+          <div class="dish-card reveal">
+            <div class="card-img" style="background-image: url('${dish.img}');">
+              <span class="price-tag">${dish.price} so'm</span>
+            </div>
+            <div class="card-content">
+              <div class="dish-name">${name}</div>
+              <div class="dish-desc">${desc}</div>
+              <button class="order-btn" data-dish="${dish.id}"><i class="fas fa-plus-circle"></i> ${lang === 'uz' ? 'Qo\'shish' : (lang === 'ru' ? 'Добавить' : 'Add')}</button>
+            </div>
+          </div>
+        `;
+      });
+      menuContainer.innerHTML = html;
+
+      // re-attach intersection observer for new cards
+      setTimeout(() => {
+        observeRevealElements();
+      }, 20);
+    }
+
+    // ---------- UPDATE UI TEXT (static strings + interior labels) ----------
+    function updateUILanguage(lang) {
+      const t = translations[lang];
+      restoNameEl.textContent = t.restoName;
+      heroTaglineEl.textContent = t.heroTagline;
+      interiorTitleEl.textContent = t.interiorTitle;
+      menuHeadingEl.textContent = t.menuHeading;
+      cartTextEl.textContent = t.cartText;
+      cartBtnText.textContent = t.cartBtn;
+
+      // interior labels
+      if (interiorLabelSpans.length) {
+        interiorLabelSpans.forEach((span, idx) => {
+          if (t.interiorLabels[idx]) span.textContent = t.interiorLabels[idx];
+        });
+      }
+
+      // update order button texts
+      document.querySelectorAll('.order-btn').forEach(btn => {
+        const icon = btn.querySelector('i') ? '<i class="fas fa-plus-circle"></i> ' : '';
+        if (lang === 'uz') btn.innerHTML = `${icon} Qo'shish`;
+        else if (lang === 'ru') btn.innerHTML = `${icon} Добавить`;
+        else btn.innerHTML = `${icon} Add`;
+      });
+
+      // dish names & desc are handled by re-render
+      renderMenu(lang);
+    }
+
+    // ---------- LANGUAGE SWITCHER ----------
+    function setActiveLang(lang) {
+      currentLang = lang;
+      // update active button styles
+      [langUz, langRu, langEn].forEach(btn => btn.classList.remove('active'));
+      if (lang === 'uz') langUz.classList.add('active');
+      if (lang === 'ru') langRu.classList.add('active');
+      if (lang === 'en') langEn.classList.add('active');
+
+      updateUILanguage(lang);
+      // small storage
+      localStorage.setItem('qrMenuLang', lang);
+    }
+
+    // Event listeners
+    langUz.addEventListener('click', () => setActiveLang('uz'));
+    langRu.addEventListener('click', () => setActiveLang('ru'));
+    langEn.addEventListener('click', () => setActiveLang('en'));
+
+    // ---------- SCROLL REVEAL (Intersection Observer) ----------
+    function observeRevealElements() {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    // additional animation on load: also make cards stagger
+    function addStaggerEffect() {
+      // not necessary, but we can add a class for initial animation
+    }
+
+    // ---------- INITIAL LOAD ----------
+    function init() {
+      // check saved lang
+      const savedLang = localStorage.getItem('qrMenuLang') || 'uz';
+      setActiveLang(savedLang);
+
+      // initial render already called inside setActiveLang
+      observeRevealElements();
+
+      // cart button demo alert
+      document.getElementById('cartBtn').addEventListener('click', () => {
+        alert(currentLang === 'uz' ? 'Buyurtma qabul qilindi! Tez orada oshpaz tayyorlaydi.' :
+              (currentLang === 'ru' ? 'Заказ принят! Повар скоро начнёт готовить.' :
+              'Order received! The chef will start preparing soon.'));
+      });
+
+      // order buttons (delegation)
+      menuContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.order-btn');
+        if (btn) {
+          const dishId = btn.dataset.dish;
+          const dish = dishes.find(d => d.id == dishId);
+          const dishName = dish ? dish.name[currentLang] : 'taom';
+          alert(currentLang === 'uz' ? `✅ ${dishName} savatga qo'shildi` :
+                (currentLang === 'ru' ? `✅ ${dishName} добавлено в корзину` :
+                `✅ ${dishName} added to cart`));
+        }
+      });
+    }
+
+    init();
+
+    // Re-observe after any potential dynamic changes
+    window.addEventListener('load', () => {
+      observeRevealElements();
+    });
+  })();
+</script>
+
+<!-- ensure all reveals get visible if already in view -->
+</body>
+</html>

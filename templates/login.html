@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up • Sign In | SOBER Hospitality</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #faf8f5 0%, #f0ebe6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #1a1612;
+    }
+
+    .auth-container {
+      max-width: 1100px;
+      width: 100%;
+      background: white;
+      border-radius: 48px;
+      box-shadow: 0 30px 50px -20px rgba(0,0,0,0.15);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-left {
+      background: #1a1612;
+      padding: 48px 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .auth-left .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+
+    .auth-left .logo span {
+      color: #b5834a;
+    }
+
+    .auth-left h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .auth-left .tagline {
+      font-size: 1.2rem;
+      color: #b5834a;
+      margin-bottom: 40px;
+    }
+
+    .benefits-list {
+      list-style: none;
+      margin-top: 30px;
+    }
+
+    .benefits-list li {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      color: #d4c0ae;
+    }
+
+    .benefits-list i {
+      color: #b5834a;
+      font-size: 1.2rem;
+    }
+
+    .auth-left-footer {
+      margin-top: 60px;
+      color: #8a7a6a;
+      font-size: 0.9rem;
+    }
+
+    .auth-right {
+      padding: 48px 40px;
+      background: white;
+    }
+
+    .lang-switch {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid #d4c0ae;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #1a1612;
+    }
+
+    .lang-btn.active {
+      background: #1a1612;
+      color: white;
+      border-color: #1a1612;
+    }
+
+    .tab-switch {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid #e8ddd2;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 12px 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #8a7a6a;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: #1a1612;
+      border-bottom-color: #1a1612;
+    }
+
+    .user-type-switch {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .user-type-btn {
+      flex: 1;
+      background: #f5f0eb;
+      border: 1px solid #e8ddd2;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #5a4a3a;
+    }
+
+    .user-type-btn.active {
+      background: #1a1612;
+      color: white;
+      border-color: #1a1612;
+    }
+
+    .auth-form {
+      display: block;
+    }
+
+    .auth-form.hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #3a2c21;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e8ddd2;
+      border-radius: 16px;
+      font-size: 1rem;
+      transition: all 0.2s;
+      background: #faf8f5;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #1a1612;
+      background: white;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .address-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #1a1612;
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+      background: #b5834a;
+      transform: translateY(-2px);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      color: #6b5848;
+    }
+
+    .auth-footer a {
+      color: #1a1612;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+      color: #b5834a;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin-top: 20px;
+      color: #6b5848;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .back-home:hover {
+      color: #1a1612;
+    }
+
+    .error-message {
+      background: #fdeded;
+      color: #c0392b;
+      padding: 12px 18px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .success-message {
+      background: #e8f5e9;
+      color: #2e7d5e;
+      padding: 12px 18px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+        border-radius: 32px;
+      }
+      .auth-left {
+        padding: 36px 28px;
+      }
+      .auth-right {
+        padding: 36px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Left Panel - Brand & Benefits -->
+    <div class="auth-left">
+      <div>
+        <div class="logo">SOBER<span> Hospitality</span></div>
+        <h2 data-i18n="left_title">Join the zero‑drama revolution</h2>
+        <div class="tagline" data-i18n="left_tagline">No drama. Just operations.</div>
+        <ul class="benefits-list">
+          <li><i class="fas fa-check-circle"></i> <span data-i18n="benefit1">7 days free trial • No credit card</span></li>
+          <li><i class="fas fa-check-circle"></i> <span data-i18n="benefit2">QR ordering • Hotel bookings • Analytics</span></li>
+          <li><i class="fas fa-check-circle"></i> <span data-i18n="benefit3">UZ • RU • EN trilingual support</span></li>
+          <li><i class="fas fa-check-circle"></i> <span data-i18n="benefit4">Cancel anytime • Zero drama guarantee</span></li>
+        </ul>
+      </div>
+      <div class="auth-left-footer">
+        <i class="fas fa-shield-alt"></i> <span data-i18n="security_note">Your data is secure. We'll never share your information.</span>
+      </div>
+    </div>
+
+    <!-- Right Panel - Forms -->
+    <div class="auth-right">
+      <!-- Language Switcher -->
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="uz">UZ</button>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+
+      <!-- Login / Register Tabs -->
+      <div class="tab-switch">
+        <button class="tab-btn active" data-tab="login" data-i18n="tab_login">Sign In</button>
+        <button class="tab-btn" data-tab="register" data-i18n="tab_register">Sign Up</button>
+      </div>
+
+      <!-- User Type Switch (for registration) -->
+      <div class="user-type-switch" id="userTypeSwitch" style="display: none;">
+        <button class="user-type-btn active" data-type="restaurant" data-i18n="type_restaurant">🏢 Restaurant</button>
+        <button class="user-type-btn" data-type="customer" data-i18n="type_customer">👤 Customer</button>
+      </div>
+
+      <!-- Message Containers -->
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <!-- ==================== LOGIN FORM ==================== -->
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label data-i18n="login_as_label">Login as</label>
+          <select id="loginUserType">
+            <option value="restaurant" data-i18n="login_restaurant">Restaurant Owner</option>
+            <option value="customer" data-i18n="login_customer">Customer</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="email_username">Email or Username</label>
+          <input type="text" id="loginIdentifier" placeholder="resto_1 / contact@resto.uz" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="password">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-submit" data-i18n="sign_in_btn">Sign In →</button>
+        <p class="auth-footer">
+          <span data-i18n="no_account">Don't have an account?</span> 
+          <a href="#" id="switchToRegister" data-i18n="sign_up_link">Sign Up</a>
+        </p>
+        <a href="/" class="back-home"><i class="fas fa-arrow-left"></i> <span data-i18n="back_home">Back to Home</span></a>
+      </form>
+
+      <!-- ==================== REGISTER FORM (RESTAURANT) ==================== -->
+      <form class="auth-form hidden" id="registerRestaurantForm">
+        <div class="form-group">
+          <label data-i18n="restaurant_name">Restaurant Name *</label>
+          <input type="text" id="regRestaurantName" placeholder="Samarqand Osh Markazi" maxlength="20" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="username">Username *</label>
+            <input type="text" id="regRestaurantUsername" placeholder="resto_1" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="mobile">Mobile *</label>
+            <input type="tel" id="regRestaurantMobile" placeholder="+998901234567" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="email">Email *</label>
+          <input type="email" id="regRestaurantEmail" placeholder="contact@restaurant.uz" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="password">Password *</label>
+          <input type="password" id="regRestaurantPassword" placeholder="Minimum 6 characters" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="country">Country</label>
+          <input type="text" id="regRestaurantCountry" value="Uzbekistan" placeholder="Uzbekistan">
+        </div>
+        <div class="form-group">
+          <input type="text" id="regRestaurantState" placeholder="State/Region">
+          <input type="text" id="regRestaurantDistrict" placeholder="District">
+          <input type="text" id="regRestaurantCity" placeholder="City *" required>
+          <input type="text" id="regRestaurantStreet" placeholder="Street">
+          <input type="text" id="regRestaurantPropertyNo" placeholder="Property No.">
+        </div>
+        <button type="submit" class="btn-submit" data-i18n="create_account_btn">Create Restaurant Account →</button>
+        <p class="auth-footer">
+          <span data-i18n="have_account">Already have an account?</span> 
+          <a href="#" id="switchToLoginFromRestaurant" data-i18n="sign_in_link">Sign In</a>
+        </p>
+        <a href="/" class="back-home"><i class="fas fa-arrow-left"></i> <span data-i18n="back_home">Back to Home</span></a>
+      </form>
+
+      <!-- ==================== REGISTER FORM (CUSTOMER) ==================== -->
+      <form class="auth-form hidden" id="registerCustomerForm">
+        <div class="form-group">
+          <label data-i18n="full_name">Full Name *</label>
+          <input type="text" id="regCustomerName" placeholder="Alisher Karimov" maxlength="20" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="mobile">Mobile Number *</label>
+          <input type="tel" id="regCustomerMobile" placeholder="+998901234567" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="password">Password (Optional)</label>
+          <input type="password" id="regCustomerPassword" placeholder="Set password for account">
+          <small style="color: #8a7a6a;" data-i18n="password_optional">Leave blank to use OTP login</small>
+        </div>
+        <button type="submit" class="btn-submit" data-i18n="create_account_btn">Create Customer Account →</button>
+        <p class="auth-footer">
+          <span data-i18n="have_account">Already have an account?</span> 
+          <a href="#" id="switchToLoginFromCustomer" data-i18n="sign_in_link">Sign In</a>
+        </p>
+        <a href="/" class="back-home"><i class="fas fa-arrow-left"></i> <span data-i18n="back_home">Back to Home</span></a>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- 🌍 MULTI-LANGUAGE TRANSLATIONS ----------
+      const translations = {
+        en: {
+          left_title: "Join the zero‑drama revolution",
+          left_tagline: "No drama. Just operations.",
+          benefit1: "7 days free trial • No credit card",
+          benefit2: "QR ordering • Hotel bookings • Analytics",
+          benefit3: "UZ • RU • EN trilingual support",
+          benefit4: "Cancel anytime • Zero drama guarantee",
+          security_note: "Your data is secure. We'll never share your information.",
+          tab_login: "Sign In",
+          tab_register: "Sign Up",
+          type_restaurant: "🏢 Restaurant",
+          type_customer: "👤 Customer",
+          login_as_label: "Login as",
+          login_restaurant: "Restaurant Owner",
+          login_customer: "Customer",
+          email_username: "Email or Username",
+          password: "Password",
+          sign_in_btn: "Sign In →",
+          no_account: "Don't have an account?",
+          sign_up_link: "Sign Up",
+          have_account: "Already have an account?",
+          sign_in_link: "Sign In",
+          back_home: "Back to Home",
+          restaurant_name: "Restaurant Name *",
+          username: "Username *",
+          mobile: "Mobile *",
+          email: "Email *",
+          full_name: "Full Name *",
+          country: "Country",
+          create_account_btn: "Create Account →",
+          password_optional: "Leave blank to use OTP login",
+          error_all_fields: "Please fill all required fields.",
+          error_password_length: "Password must be at least 6 characters.",
+          error_mobile_format: "Please enter a valid mobile number.",
+          success_registration: "Registration successful! Redirecting to dashboard...",
+          success_login: "Login successful! Redirecting..."
+        },
+        uz: {
+          left_title: "Nol dramali inqilobga qo'shiling",
+          left_tagline: "Drama emas. Faqat operatsiyalar.",
+          benefit1: "7 kun bepul sinov • Karta kerak emas",
+          benefit2: "QR buyurtma • Mehmonxona bandlovi • Analitika",
+          benefit3: "O'Z • RU • EN uch tilda qo'llab-quvvatlash",
+          benefit4: "Istalgan vaqt bekor qiling • Nol drama kafolati",
+          security_note: "Ma'lumotlaringiz xavfsiz. Hech qachon ulashmaymiz.",
+          tab_login: "Kirish",
+          tab_register: "Ro'yxatdan o'tish",
+          type_restaurant: "🏢 Restoran",
+          type_customer: "👤 Mijoz",
+          login_as_label: "Sifatida kirish",
+          login_restaurant: "Restoran egasi",
+          login_customer: "Mijoz",
+          email_username: "Email yoki Username",
+          password: "Parol",
+          sign_in_btn: "Kirish →",
+          no_account: "Hisobingiz yo'qmi?",
+          sign_up_link: "Ro'yxatdan o'tish",
+          have_account: "Hisobingiz bormi?",
+          sign_in_link: "Kirish",
+          back_home: "Bosh sahifaga qaytish",
+          restaurant_name: "Restoran nomi *",
+          username: "Username *",
+          mobile: "Telefon *",
+          email: "Email *",
+          full_name: "To'liq ism *",
+          country: "Davlat",
+          create_account_btn: "Hisob yaratish →",
+          password_optional: "OTP orqali kirish uchun bo'sh qoldiring",
+          error_all_fields: "Iltimos, barcha kerakli maydonlarni to'ldiring.",
+          error_password_length: "Parol kamida 6 ta belgidan iborat bo'lishi kerak.",
+          error_mobile_format: "Iltimos, to'g'ri telefon raqamini kiriting.",
+          success_registration: "Ro'yxatdan o'tish muvaffaqiyatli! Dashboardga yo'naltirilmoqda...",
+          success_login: "Kirish muvaffaqiyatli! Yo'naltirilmoqda..."
+        },
+        ru: {
+          left_title: "Присоединяйтесь к революции без драмы",
+          left_tagline: "Без драмы. Только операции.",
+          benefit1: "7 дней бесплатно • Без карты",
+          benefit2: "QR-заказы • Бронирование • Аналитика",
+          benefit3: "UZ • RU • EN поддержка на трёх языках",
+          benefit4: "Отмена в любое время • Гарантия без драмы",
+          security_note: "Ваши данные в безопасности. Мы никогда не передадим их.",
+          tab_login: "Вход",
+          tab_register: "Регистрация",
+          type_restaurant: "🏢 Ресторан",
+          type_customer: "👤 Клиент",
+          login_as_label: "Войти как",
+          login_restaurant: "Владелец ресторана",
+          login_customer: "Клиент",
+          email_username: "Email или Логин",
+          password: "Пароль",
+          sign_in_btn: "Войти →",
+          no_account: "Нет аккаунта?",
+          sign_up_link: "Регистрация",
+          have_account: "Уже есть аккаунт?",
+          sign_in_link: "Войти",
+          back_home: "На главную",
+          restaurant_name: "Название ресторана *",
+          username: "Логин *",
+          mobile: "Телефон *",
+          email: "Email *",
+          full_name: "Полное имя *",
+          country: "Страна",
+          create_account_btn: "Создать аккаунт →",
+          password_optional: "Оставьте пустым для входа по OTP",
+          error_all_fields: "Пожалуйста, заполните все обязательные поля.",
+          error_password_length: "Пароль должен содержать минимум 6 символов.",
+          error_mobile_format: "Пожалуйста, введите корректный номер телефона.",
+          success_registration: "Регистрация успешна! Перенаправление в панель управления...",
+          success_login: "Вход выполнен! Перенаправление..."
+        }
+      };
+
+      let currentLang = 'en';
+
+      // ---------- DOM ELEMENTS ----------
+      const langBtns = document.querySelectorAll('.lang-btn');
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const userTypeBtns = document.querySelectorAll('.user-type-btn');
+      const userTypeSwitch = document.getElementById('userTypeSwitch');
+      
+      const loginForm = document.getElementById('loginForm');
+      const registerRestaurantForm = document.getElementById('registerRestaurantForm');
+      const registerCustomerForm = document.getElementById('registerCustomerForm');
+      
+      const errorMsg = document.getElementById('errorMessage');
+      const successMsg = document.getElementById('successMessage');
+
+      // ---------- LANGUAGE SWITCHER ----------
+      function updateContent(lang) {
+        const t = translations[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (t[key]) el.textContent = t[key];
+        });
+        langBtns.forEach(btn => {
+          btn.classList.remove('active');
+          if(btn.dataset.lang === lang) btn.classList.add('active');
+        });
+        currentLang = lang;
+        localStorage.setItem('sober_lang', lang);
+      }
+
+      langBtns.forEach(btn => {
+        btn.addEventListener('click', () => updateContent(btn.dataset.lang));
+      });
+
+      // ---------- TAB SWITCHING ----------
+      function showTab(tabName) {
+        const isLogin = tabName === 'login';
+        
+        tabBtns.forEach(btn => {
+          btn.classList.remove('active');
+          if(btn.dataset.tab === tabName) btn.classList.add('active');
+        });
+
+        loginForm.classList.toggle('hidden', !isLogin);
+        registerRestaurantForm.classList.add('hidden');
+        registerCustomerForm.classList.add('hidden');
+        userTypeSwitch.style.display = isLogin ? 'none' : 'flex';
+
+        if (!isLogin) {
+          const activeType = document.querySelector('.user-type-btn.active')?.dataset.type || 'restaurant';
+          showRegistrationForm(activeType);
+        }
+
+        hideMessages();
+      }
+
+      function showRegistrationForm(type) {
+        registerRestaurantForm.classList.toggle('hidden', type !== 'restaurant');
+        registerCustomerForm.classList.toggle('hidden', type !== 'customer');
+      }
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => showTab(btn.dataset.tab));
+      });
+
+      userTypeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          userTypeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          showRegistrationForm(btn.dataset.type);
+        });
+      });
+
+      // Switch links
+      document.getElementById('switchToRegister').addEventListener('click', (e) => {
+        e.preventDefault();
+        showTab('register');
+      });
+      document.getElementById('switchToLoginFromRestaurant').addEventListener('click', (e) => {
+        e.preventDefault();
+        showTab('login');
+      });
+      document.getElementById('switchToLoginFromCustomer').addEventListener('click', (e) => {
+        e.preventDefault();
+        showTab('login');
+      });
+
+      // ---------- HELPER FUNCTIONS ----------
+      function hideMessages() {
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+      }
+
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+      }
+
+      function showSuccess(msg) {
+        successMsg.textContent = msg;
+        successMsg.style.display = 'block';
+        errorMsg.style.display = 'none';
+      }
+
+      function generateRestaurantId() {
+        return 'RES' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 5).toUpperCase();
+      }
+
+      function validateMobile(mobile) {
+        return mobile && mobile.length >= 10;
+      }
+
+      // ---------- FORM SUBMISSION HANDLERS ----------
+      
+      // LOGIN
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideMessages();
+        
+        const userType = document.getElementById('loginUserType').value;
+        const identifier = document.getElementById('loginIdentifier').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!identifier || !password) {
+          showError(translations[currentLang].error_all_fields);
+          return;
+        }
+
+        // Simulate API call
+        console.log('Login attempt:', { userType, identifier });
+        
+        showSuccess(translations[currentLang].success_login);
+        setTimeout(() => {
+          window.location.href = userType === 'restaurant' ? '/owner-dashboard' : '/menu';
+        }, 1500);
+      });
+
+      // REGISTER RESTAURANT
+      registerRestaurantForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideMessages();
+
+        const name = document.getElementById('regRestaurantName').value.trim();
+        const username = document.getElementById('regRestaurantUsername').value.trim();
+        const mobile = document.getElementById('regRestaurantMobile').value.trim();
+        const email = document.getElementById('regRestaurantEmail').value.trim();
+        const password = document.getElementById('regRestaurantPassword').value;
+        const city = document.getElementById('regRestaurantCity').value.trim();
+
+        if (!name || !username || !mobile || !email || !password || !city) {
+          showError(translations[currentLang].error_all_fields);
+          return;
+        }
+
+        if (password.length < 6) {
+          showError(translations[currentLang].error_password_length);
+          return;
+        }
+
+        if (!validateMobile(mobile)) {
+          showError(translations[currentLang].error_mobile_format);
+          return;
+        }
+
+        const restaurantData = {
+          RestaurantId: generateRestaurantId(),
+          RestaurantName: name,
+          RestaurantUsername: username,
+          RestaurantMobile: mobile,
+          RestaurantEmail: email,
+          RestaurantPassword: password, // Will be hashed on backend
+          RestaurantCountry: document.getElementById('regRestaurantCountry').value,
+          RestaurantState: document.getElementById('regRestaurantState').value,
+          RestaurantDistrict: document.getElementById('regRestaurantDistrict').value,
+          RestaurantCity: city,
+          RestaurantStreet: document.getElementById('regRestaurantStreet').value,
+          RestaurantPropertyNo: document.getElementById('regRestaurantPropertyNo').value,
+          StatusId: 'ACTIVE'
+        };
+
+        console.log('Restaurant Registration:', restaurantData);
+        
+        // API Call would go here
+        showSuccess(translations[currentLang].success_registration);
+        setTimeout(() => {
+          window.location.href = '/owner-dashboard';
+        }, 1500);
+      });
+
+      // REGISTER CUSTOMER
+      registerCustomerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideMessages();
+
+        const name = document.getElementById('regCustomerName').value.trim();
+        const mobile = document.getElementById('regCustomerMobile').value.trim();
+        const password = document.getElementById('regCustomerPassword').value;
+
+        if (!name || !mobile) {
+          showError(translations[currentLang].error_all_fields);
+          return;
+        }
+
+        if (!validateMobile(mobile)) {
+          showError(translations[currentLang].error_mobile_format);
+          return;
+        }
+
+        if (password && password.length < 6) {
+          showError(translations[currentLang].error_password_length);
+          return;
+        }
+
+        const customerData = {
+          CustomerMobile: mobile,
+          CustomerName: name,
+          CustomerPassword: password || null
+        };
+
+        console.log('Customer Registration:', customerData);
+        
+        showSuccess(translations[currentLang].success_registration);
+        setTimeout(() => {
+          window.location.href = '/menu';
+        }, 1500);
+      });
+
+      // ---------- INITIALIZATION ----------
+      const savedLang = localStorage.getItem('sober_lang') || 'en';
+      updateContent(savedLang);
+      
+      // Check URL hash for tab
+      if (window.location.hash === '#register') {
+        showTab('register');
+      }
+    })();
+  </script>
+</body>
+</html>

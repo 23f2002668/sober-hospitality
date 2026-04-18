@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOBER Hospitality • No drama. Just operations.</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf8f5;
+      color: #1a1612;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideRight {
+      0% { opacity: 0; transform: translateX(-40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e8ddd2;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #1a1612;
+    }
+
+    .logo span {
+      color: #b5834a;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #3a2c21;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #b5834a; }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      margin-left: 20px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid #d4c0ae;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #1a1612;
+      color: white;
+      border-color: #1a1612;
+    }
+
+    .btn-primary {
+      background: #1a1612;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      background: #b5834a;
+      transform: translateY(-3px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #1a1612;
+      color: #1a1612;
+      padding: 10px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .btn-outline:hover {
+      background: #1a1612;
+      color: white;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 70px 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.5rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      color: #1a1612;
+    }
+
+    .hero-tagline {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #b5834a;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #5e4d3c;
+      margin-bottom: 32px;
+    }
+
+    .hero-image {
+      background: url('https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;
+      border-radius: 48px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 30px 40px -15px rgba(0,0,0,0.3);
+      border: 4px solid white;
+      animation: scaleIn 1s ease;
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .hero-image i {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      color: #b5834a;
+    }
+
+    /* stats */
+    .stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .stat-item h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a1612;
+    }
+
+    .stat-item span {
+      color: #6b5848;
+    }
+
+    /* section titles */
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+      color: #1a1612;
+    }
+
+    .section-title:after {
+      content: '';
+      width: 80px;
+      height: 4px;
+      background: #1a1612;
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 10px;
+    }
+
+    /* product suite */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin: 50px 0;
+    }
+
+    .product-card {
+      background: white;
+      padding: 32px 24px;
+      border-radius: 28px;
+      border: 1px solid #e8ddd2;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
+      border-color: #b5834a;
+    }
+
+    .product-icon {
+      font-size: 2.5rem;
+      color: #b5834a;
+      margin-bottom: 20px;
+    }
+
+    .product-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .product-badge {
+      background: #f0e6dc;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    /* features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+      margin: 70px 0;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 36px 28px;
+      border-radius: 36px;
+      box-shadow: 0 20px 30px -8px rgba(0,0,0,0.05);
+      border: 1px solid #e8ddd2;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 30px 40px -12px rgba(26,22,18,0.15);
+      border-color: #1a1612;
+    }
+
+    .feature-icon {
+      font-size: 2.8rem;
+      color: #b5834a;
+      margin-bottom: 24px;
+    }
+
+    /* pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin: 50px 0;
+    }
+
+    .pricing-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 48px;
+      border: 1px solid #e8ddd2;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid #1a1612;
+      box-shadow: 0 30px 40px -12px rgba(26,22,18,0.2);
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #1a1612;
+      margin: 20px 0;
+    }
+
+    .badge {
+      background: #1a1612;
+      color: white;
+      padding: 6px 18px;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      position: absolute;
+      top: -12px;
+      right: 30px;
+    }
+
+    /* founder section */
+    .founder-section {
+      background: white;
+      border-radius: 48px;
+      padding: 48px;
+      margin: 80px 0;
+      border: 1px solid #e8ddd2;
+    }
+
+    .founder-header {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .founder-title {
+      flex: 1;
+    }
+
+    .founder-title h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #1a1612;
+    }
+
+    .founder-badge {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .badge-dark {
+      background: #1a1612;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .badge-gold {
+      background: #b5834a;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .contact-info {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .contact-info i {
+      color: #b5834a;
+      margin-right: 8px;
+    }
+
+    /* skills grid */
+    .skills-section {
+      margin: 40px 0;
+    }
+
+    .skills-section h3 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #1a1612;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-tag {
+      background: #f5f0eb;
+      padding: 10px 18px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1a1612;
+    }
+
+    /* projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    .project-card {
+      background: #faf8f5;
+      padding: 28px;
+      border-radius: 28px;
+      border: 1px solid #e8ddd2;
+      transition: transform 0.2s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.08);
+    }
+
+    .project-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #1a1612;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .project-tag {
+      background: #e8ddd2;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #1a1612;
+    }
+
+    /* achievements list */
+    .achievements-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .achievement-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #faf8f5;
+      padding: 18px 24px;
+      border-radius: 60px;
+      border: 1px solid #e8ddd2;
+    }
+
+    .achievement-item i {
+      font-size: 1.5rem;
+      color: #b5834a;
+    }
+
+    /* education */
+    .education-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #faf8f5;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .education-table th {
+      background: #1a1612;
+      color: white;
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .education-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e8ddd2;
+    }
+
+    /* footer */
+    footer {
+      border-top: 1px solid #e8ddd2;
+      padding: 40px 0;
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      color: #6b5848;
+    }
+
+    /* tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin: 30px 0 20px;
+      border-bottom: 2px solid #e8ddd2;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #7a6854;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: #1a1612;
+      border-bottom-color: #1a1612;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px 0;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @media (max-width: 800px) {
+      .navbar { flex-direction: column; gap: 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .founder-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="logo">SOBER<span> Hospitality</span></div>
+  <div class="nav-links">
+    <a href="/" data-i18n="nav_products">Home</a>
+    <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+    <a href="#founder" data-i18n="nav_founder">Founder</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+    </div>
+    <a href="/login" class="btn-primary" style="color: white;"><i class="fas fa-arrow-right"></i> <span data-i18n="dashboard_btn">Sign Up / Sign In</span></a>
+  </div>
+</nav>
+
+<main class="container">
+  <!-- Hero -->
+  <section class="hero reveal">
+    <div>
+      <h1 data-i18n="hero_title">SOBER Hospitality</h1>
+      <div class="hero-tagline" data-i18n="hero_tagline">No drama. Just operations.</div>
+      <p data-i18n="hero_sub">QR menus, hotel bookings, staff scheduling, and inventory — all in one platform built for Uzbekistan's hardest-working restaurateurs and hoteliers.</p>
+      <div class="stats">
+        <div class="stat-item"><h3>25+</h3><span data-i18n="stat1">restaurants & hotels</span></div>
+        <div class="stat-item"><h3>500+</h3><span data-i18n="stat2">daily orders processed</span></div>
+        <div class="stat-item"><h3>99.9%</h3><span data-i18n="stat3">uptime, zero drama</span></div>
+      </div>
+      <div style="margin-top: 30px;">
+        <a href="/demo" class="btn-primary" style="margin-right: 16px;"><i class="fas fa-play"></i> <span data-i18n="demo_btn">Request Demo</span></a>
+        <a href="#pricing" class="btn-outline"><span data-i18n="pricing_link">View Pricing →</span></a>
+      </div>
+    </div>
+    <div class="hero-image">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <h2 class="section-title reveal" data-i18n="features_title">Why operators choose SOBER</h2>
+    <div class="features-grid">
+      <div class="product-card reveal">
+        <div class="product-icon"><i class="fas fa-qrcode"></i></div>
+        <h3>MenuFlow</h3>
+        <p data-i18n="product1_desc">QR menus. Digital ordering. No waiters needed.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+        <h3 data-i18n="feat1_title">Set up in minutes</h3>
+        <p data-i18n="feat1_desc">No complex onboarding. Upload your menu, print QR codes, you're live.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-language"></i></div>
+        <h3 data-i18n="feat2_title">UZ • RU • EN</h3>
+        <p data-i18n="feat2_desc">Trilingual by default. Tourists and locals both feel at home.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+        <h3 data-i18n="feat3_title">Real-time analytics</h3>
+        <p data-i18n="feat3_desc">Revenue, popular items, peak hours — all at your fingertips.</p>
+      </div>
+      <div class="feature-card reveal" style="visibility: hidden;">
+        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3 data-i18n="feat4_title">Zero drama guarantee</h3>
+        <p data-i18n="feat4_desc">99.9% uptime. 24/7 support. If it breaks, we fix it. Fast.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3 data-i18n="feat4_title">Zero drama guarantee</h3>
+        <p data-i18n="feat4_desc">99.9% uptime. 24/7 support. If it breaks, we fix it. Fast.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fas fa-gift"></i></div>
+        <h3 data-i18n="feat5_title">7 days free trial</h3>
+        <p data-i18n="feat5_desc">Full access to Professional plan. No credit card. Cancel anytime. Zero risk.</p>
+      </div>
+      <div class="feature-card reveal" style="visibility: hidden;">
+        <div class="feature-icon"><i class="fas fa-gift"></i></div>
+        <h3 data-i18n="feat5_title">7 days free trial</h3>
+        <p data-i18n="feat5_desc">Full access to Professional plan. No credit card. Cancel anytime. Zero risk.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <h2 class="section-title reveal" data-i18n="pricing_title">Simple pricing. No hidden drama.</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <h3 data-i18n="plan1_name">Starter</h3>
+        <div class="price">$15<span style="font-size:1rem;">/mo</span></div>
+        <p data-i18n="plan1_desc">Perfect for small cafes</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan1_feat1">Up to 50 orders/day</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan1_feat2">Basic analytics</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan1_feat3">Email support</span></li>
+        </ul>
+        <a href="#" class="btn-outline" style="display:block; text-align:center;" data-i18n="get_started">Get started</a>
+      </div>
+      <div class="pricing-card featured reveal">
+        <span class="badge" data-i18n="popular_badge">MOST POPULAR</span>
+        <h3 data-i18n="plan2_name">Professional</h3>
+        <div class="price">$25<span style="font-size:1rem;">/mo</span></div>
+        <p data-i18n="plan2_desc">For growing restaurants</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat1">Unlimited orders</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat2">Advanced dashboard</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat3">Payment integrations</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan2_feat4">Priority support</span></li>
+        </ul>
+        <a href="#" class="btn-primary" style="display:block; text-align:center;" data-i18n="start_trial">Start 30-day trial</a>
+      </div>
+      <div class="pricing-card reveal">
+        <h3 data-i18n="plan3_name">Enterprise</h3>
+        <div class="price" data-i18n="plan3_price">Custom</div>
+        <p data-i18n="plan3_desc">Multi‑location groups</p>
+        <ul style="margin: 25px 0; list-style: none;">
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat1">Everything in Professional</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat2">Dedicated account manager</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat3">Custom integrations</span></li>
+          <li><i class="fas fa-check" style="color:#2e7d5e;"></i> <span data-i18n="plan3_feat4">SLA guarantee</span></li>
+        </ul>
+        <a href="#" class="btn-outline" style="display:block; text-align:center;" data-i18n="contact_sales">Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder Section -->
+  <section id="founder">
+    <div class="founder-section reveal">
+      <div class="founder-header">
+        <div class="founder-title">
+          <div class="founder-badge">
+            <span class="badge-dark"><i class="fas fa-graduation-cap"></i> IIT Madras • B.S. Data Science</span>
+            <span class="badge-dark"><i class="fas fa-graduation-cap"></i> School 21 • Software Engineering</span>
+            <span class="badge-dark"><i class="fas fa-code"></i> B.Tech CSE • AKTU</span>
+            <span class="badge-gold"><i class="fas fa-medal"></i> Merit Cum Means CSR Scholar</span>
+          </div>
+          <h2>Shahzada Moon</h2>
+          <p style="font-size: 1.3rem; color: #5a4533; margin: 10px 0;">Founder & CTO • Full‑Stack Developer • Data Analyst • DevOps Engineer</p>
+          <p style="margin-bottom: 20px;"><i class="fas fa-map-pin"></i> Ghaziabad - 201206, Uttar Pradesh, India</p>
+          <div class="contact-info">
+            <span><i class="fas fa-phone"></i> +91 8126524809</span>
+            <span><i class="fas fa-phone"></i> +91 9997745651</span>
+            <span><i class="fas fa-envelope"></i> 23f2002668@ds.study.iitm.ac.in</span>
+            <span><i class="fas fa-envelope"></i> shahzada.moon.work@gmail.com</span>
+          </div>
+          <div class="contact-info" style="margin-top: 10px;">
+            <span><i class="fab fa-github"></i> 23f2002668</span>
+            <span><i class="fas fa-globe"></i> 23f2002668.github.io/Portfolio/</span>
+          </div>
+        </div>
+        <div style="min-width: 200px; text-align: center;">
+          <a href="https://github.com/23f2002668" target="_blank" class="btn-outline" style="margin-right: 10px;"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://23f2002668.github.io/Portfolio/" target="_blank" class="btn-primary"><i class="fas fa-briefcase"></i> Portfolio</a>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="skills">💻 Technical Skills</button>
+        <button class="tab-btn" data-tab="projects">🚀 Featured Projects</button>
+        <button class="tab-btn" data-tab="achievements">🏆 Achievements</button>
+        <button class="tab-btn" data-tab="education">📚 Education</button>
+      </div>
+
+      <!-- Tab 1: Skills -->
+      <div class="tab-content active" id="tab-skills">
+        <div class="skills-section">
+          <h3><i class="fas fa-code"></i> Programming Languages</h3>
+          <div class="skills-grid">
+            <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">C++</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">Shell Scripting</span><span class="skill-tag">JavaScript</span><span class="skill-tag">TypeScript</span>
+          </div>
+        </div>
+        <div class="skills-section">
+          <h3><i class="fas fa-globe"></i> Web Technologies</h3>
+          <div class="skills-grid">
+            <span class="skill-tag">HTML/CSS</span><span class="skill-tag">Tailwind CSS</span><span class="skill-tag">VueJs</span><span class="skill-tag">Flask</span>
+            <span class="skill-tag">MERN Stack</span><span class="skill-tag">FastAPI</span><span class="skill-tag">RESTful APIs</span><span class="skill-tag">Redis</span>
+            <span class="skill-tag">Celery</span><span class="skill-tag">Node.js</span><span class="skill-tag">Express.js</span><span class="skill-tag">React.js</span>
+          </div>
+        </div>
+        <div class="skills-section">
+          <h3><i class="fas fa-brain"></i> Data Science & ML</h3>
+          <div class="skills-grid">
+            <span class="skill-tag">Machine Learning</span><span class="skill-tag">AI</span><span class="skill-tag">LLMs</span><span class="skill-tag">Prompt Engineering</span>
+            <span class="skill-tag">scikit-learn</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span>
+          </div>
+        </div>
+        <div class="skills-section">
+          <h3><i class="fas fa-chart-bar"></i> Visualization & Analytics</h3>
+          <div class="skills-grid">
+            <span class="skill-tag">Power BI</span><span class="skill-tag">Excel (ABC, Pivot)</span><span class="skill-tag">Google Sheets</span>
+            <span class="skill-tag">Matplotlib</span><span class="skill-tag">Seaborn</span>
+          </div>
+        </div>
+        <div class="skills-section">
+          <h3><i class="fas fa-database"></i> Databases & Tools</h3>
+          <div class="skills-grid">
+            <span class="skill-tag">MySQL</span><span class="skill-tag">SQLite</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">Git/GitHub</span><span class="skill-tag">Docker</span><span class="skill-tag">Postman</span><span class="skill-tag">Selenium</span>
+            <span class="skill-tag">BeautifulSoup</span><span class="skill-tag">Playwright</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Projects -->
+      <div class="tab-content" id="tab-projects">
+        <div class="projects-grid">
+          <div class="project-card">
+            <h4>🤖 AgentForce CRM</h4>
+            <p>Multi‑Agent AI System for Automated CRM Data Completion (Microsoft AI Unlocked 2026)</p>
+            <div class="project-tags">
+              <span class="project-tag">Azure AI Foundry</span><span class="project-tag">Phi‑4</span><span class="project-tag">Salesforce API</span><span class="project-tag">Flask</span>
+            </div>
+            <p><small>✓ 88% confidence • 45 min saved/opportunity • 18,750 annual hours saved</small></p>
+          </div>
+          <div class="project-card">
+            <h4>🏢 SOBER B2B Training Platform</h4>
+            <p>Multi‑tenant SaaS with complete data isolation, subscription quotas (Free/Pro/Enterprise)</p>
+            <div class="project-tags">
+              <span class="project-tag">Angular 21</span><span class="project-tag">Flask</span><span class="project-tag">SQLAlchemy</span><span class="project-tag">JWT</span>
+            </div>
+            <p><small>✓ 1,000+ employees • RBAC • Atomic transactions</small></p>
+          </div>
+          <div class="project-card">
+            <h4>📊 Global IT Spend Dashboard</h4>
+            <p>Power BI analysis of $4.2B IT spending across departments and geographies</p>
+            <div class="project-tags">
+              <span class="project-tag">Power BI</span><span class="project-tag">Scenario Planning</span><span class="project-tag">DAX</span>
+            </div>
+            <p><small>✓ Certificate of Excellence (IIT Madras) • 5.85% Plan vs Actual variance</small></p>
+          </div>
+          <div class="project-card">
+            <h4>📈 Engage2Value ML</h4>
+            <p>Predictive modeling on 100,000+ session records for conversion optimization</p>
+            <div class="project-tags">
+              <span class="project-tag">XGBoost</span><span class="project-tag">Gradient Boosting</span><span class="project-tag">Voting Regressor</span>
+            </div>
+            <p><small>✓ R², MSE, RMSE, MAE evaluation • Top 3 models compared</small></p>
+          </div>
+          <div class="project-card">
+            <h4>📝 QuizMaster</h4>
+            <p>Quiz management platform with timed tests, real‑time evaluation, and automated reports</p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span><span class="project-tag">Flask</span><span class="project-tag">VueJS</span><span class="project-tag">Celery</span><span class="project-tag">MySQL</span>
+            </div>
+          </div>
+          <div class="project-card">
+            <h4>💊 Pharmacy Flash Dashboard</h4>
+            <p>ABC analysis of 42 days sales data — 29% products generated 79% revenue</p>
+            <div class="project-tags">
+              <span class="project-tag">Excel</span><span class="project-tag">Time‑series</span><span class="project-tag">Pivot Tables</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Achievements -->
+      <div class="tab-content" id="tab-achievements">
+        <div class="achievements-list">
+          <div class="achievement-item"><i class="fas fa-trophy"></i> Merit Cum Means CSR Scholarship – IIT Madras</div>
+          <div class="achievement-item"><i class="fas fa-certificate"></i> Foundation in Programming & Data Science – IIT Madras</div>
+          <div class="achievement-item"><i class="fas fa-certificate"></i> Blockchain & Applications – NPTEL Certification (2025)</div>
+          <div class="achievement-item"><i class="fas fa-briefcase"></i> Data Analytics Job Simulation – Deloitte (2025)</div>
+          <div class="achievement-item"><i class="fas fa-shield"></i> Cyber Job Simulation – Deloitte (2025)</div>
+          <div class="achievement-item"><i class="fas fa-chart-pie"></i> Power BI Workshop Excellence – IIT Madras (99/100 marks)</div>
+          <div class="achievement-item"><i class="fas fa-robot"></i> Machine Learning Workshop – IIT Madras (Jan 2025)</div>
+          <div class="achievement-item"><i class="fas fa-cubes"></i> Dynamic Programming Workshop – IIT Madras (Jan 2025)</div>
+          <div class="achievement-item"><i class="fas fa-chart-line"></i> Data Visualisation Simulation – Tata & Forage (2026)</div>
+          <div class="achievement-item"><i class="fas fa-graduation-cap"></i> Diploma in Programming – IIT Madras (7.52 CGPA)</div>
+          <div class="achievement-item"><i class="fas fa-graduation-cap"></i> Diploma in Data Science – IIT Madras (7.11 CGPA)</div>
+        </div>
+        <h3 style="margin: 30px 0 20px;">📚 Relevant Coursework</h3>
+        <div class="skills-grid">
+          <span class="skill-tag">Programming in Python</span><span class="skill-tag">Java</span><span class="skill-tag">C/C++</span>
+          <span class="skill-tag">OOP</span><span class="skill-tag">DSA</span><span class="skill-tag">Operating Systems</span>
+          <span class="skill-tag">Shell Scripting</span><span class="skill-tag">Business Analytics</span><span class="skill-tag">Machine Learning</span>
+          <span class="skill-tag">Data Science</span><span class="skill-tag">Statistics</span><span class="skill-tag">DBMS</span>
+          <span class="skill-tag">Blockchain</span><span class="skill-tag">Probability & Stats</span><span class="skill-tag">Linear Algebra</span>
+        </div>
+      </div>
+
+      <!-- Tab 4: Education -->
+      <div class="tab-content" id="tab-education">
+        <table class="education-table">
+          <tr><th>Program</th><th>Institution</th><th>Year</th></tr>
+          <tr><td>B.S. Data Science And Applications</td><td>IIT Madras</td><td>2027</td></tr>
+          <tr><td>B.Tech Computer Science & Engg.</td><td>AKTU, Lucknow</td><td>2027</td></tr>
+          <tr><td>Diploma in Programming</td><td>IIT Madras</td><td>2025</td></tr>
+          <tr><td>Diploma in Data Science</td><td>IIT Madras</td><td>2025</td></tr>
+          <tr><td>X (High School)</td><td>Govt. Ordnance Factory Inter College</td><td>2020</td></tr>
+          <tr><td>XII (Senior Secondary)</td><td>Maharishi Dayanand Vidyapeeth</td><td>2022</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="container">
+  <div>© 2026 SOBER Hospitality — No drama. Just operations. Built by Shahzada Moon.</div>
+  <div>
+    <a href="https://github.com/23f2002668" style="color:#6b5848; margin:0 10px;"><i class="fab fa-github fa-lg"></i></a>
+    <a href="#" style="color:#6b5848; margin:0 10px;"><i class="fab fa-linkedin fa-lg"></i></a>
+    <a href="mailto:23f2002668@ds.study.iitm.ac.in" style="color:#6b5848; margin:0 10px;"><i class="fas fa-envelope fa-lg"></i></a>
+  </div>
+  <br><br>
+</footer>
+
+<script>
+  (function() {
+    // ---- 🌍 MULTI-LANGUAGE ----
+    const translations = {
+      en: {
+        nav_products: "Home", nav_pricing: "Pricing", nav_founder: "Founder",
+        login_btn: "Sign Up / Sign In",
+        hero_title: "SOBER Hospitality",
+        hero_tagline: "No drama. Just operations.",
+        hero_sub: "QR menus, hotel bookings, staff scheduling, and inventory — all in one platform built for Uzbekistan's hardest-working restaurateurs and hoteliers.",
+        stat1: "restaurants & hotels", stat2: "daily orders processed", stat3: "uptime, zero drama",
+        demo_btn: "Request Demo", pricing_link: "View Pricing →",
+        products_title: "The SOBER Hospitality Suite",
+        product1_desc: "QR menus. Digital ordering. No waiters needed.",
+        product2_desc: "Bookings. Check-ins. Housekeeping. Zero friction.",
+        product3_desc: "Table reservations. Automatic confirmations. Full house.",
+        product4_desc: "Inventory tracking. Low-stock alerts. Never run out.",
+        product5_desc: "Staff scheduling. Time tracking. No scheduling drama.",
+        features_title: "Why operators choose SOBER",
+        feat1_title: "Set up in minutes", feat1_desc: "No complex onboarding. Upload your menu, print QR codes, you're live.",
+        feat2_title: "UZ • RU • EN", feat2_desc: "Trilingual by default. Tourists and locals both feel at home.",
+        feat3_title: "Real-time analytics", feat3_desc: "Revenue, popular items, peak hours — all at your fingertips.",
+        feat4_title: "Zero drama guarantee", feat4_desc: "99.9% uptime. 24/7 support. If it breaks, we fix it. Fast.",
+        feat5_title: "7 days free trial", feat5_desc: "Full access to Professional plan. No credit card. Cancel anytime. Zero risk.",
+        pricing_title: "Simple pricing. No hidden drama.",
+        plan1_name: "Starter", plan1_desc: "Perfect for small cafes", plan1_feat1: "Up to 50 orders/day", plan1_feat2: "Basic analytics", plan1_feat3: "Email support",
+        plan2_name: "Professional", plan2_desc: "For growing restaurants", plan2_feat1: "Unlimited orders", plan2_feat2: "Advanced dashboard", plan2_feat3: "Payment integrations", plan2_feat4: "Priority support",
+        plan3_name: "Enterprise", plan3_price: "Custom", plan3_desc: "Multi‑location groups", plan3_feat1: "Everything in Professional", plan3_feat2: "Dedicated account manager", plan3_feat3: "Custom integrations", plan3_feat4: "SLA guarantee",
+        popular_badge: "MOST POPULAR", get_started: "Get started", start_trial: "Start 30-day trial", contact_sales: "Contact sales"
+      },
+      uz: {
+        nav_products: "Bosh sahifa", nav_pricing: "Narxlar", nav_founder: "Asoschi",
+        dashboard_btn: "Ro'yxatdan o'tish / Kirish",
+        hero_title: "SOBER Hospitality",
+        hero_tagline: "Drama emas. Faqat operatsiyalar.",
+        hero_sub: "QR menyular, mehmonxona bandlovlari, xodimlar jadvali va inventar — O'zbekistonning eng mehnatkash restavrator va mehmonxona egalari uchun yagona platforma.",
+        stat1: "restoran va mehmonxona", stat2: "kunlik buyurtmalar", stat3: "ish vaqti, drama nol",
+        demo_btn: "Demo so'rash", pricing_link: "Narxlarni ko'rish →",
+        products_title: "SOBER Hospitality Suite",
+        product1_desc: "QR menyular. Raqamli buyurtma. Ofitsiantlar kerak emas.",
+        product2_desc: "Bandlovlar. Ro'yxatdan o'tish. Xonani tozalash. Nol muammo.",
+        product3_desc: "Stol bandlovlari. Avtomatik tasdiqlash. To'liq zal.",
+        product4_desc: "Inventar kuzatuvi. Kam qoldiq ogohlantirishlari. Hech qachon tugamaydi.",
+        product5_desc: "Xodimlar jadvali. Vaqt kuzatuvi. Jadval dramasi yo'q.",
+        features_title: "Nima uchun operatorlar SOBERni tanlaydi",
+        feat1_title: "Bir necha daqiqada sozlash", feat1_desc: "Murakkab onboarding yo'q. Menyuni yuklang, QR kodlarni chop eting, tayyorsiz.",
+        feat2_title: "O'Z • RU • EN", feat2_desc: "Standart uch tilda. Sayyohlar ham, mahalliy aholi ham o'zini uydagidek his qiladi.",
+        feat3_title: "Real vaqt analitikasi", feat3_desc: "Daromad, mashhur taomlar, eng band soatlar — barchasi qo'lingizda.",
+        feat4_title: "Nol drama kafolati", feat4_desc: "99.9% ish vaqti. 24/7 qo'llab-quvvatlash. Agar buzilsa, tezda tuzatamiz.",
+        feat5_title: "7 kunlik bepul sinov", feat5_desc: "Professional tarifga to'liq kirish. Karta kerak emas. Istalgan vaqt bekor qiling. Nol xavf.",
+        pricing_title: "Oddiy narxlar. Yashirin drama yo'q.",
+        plan1_name: "Starter", plan1_desc: "Kichik kafelar uchun", plan1_feat1: "50 ta buyurtma/kun", plan1_feat2: "Asosiy analitika", plan1_feat3: "Email yordam",
+        plan2_name: "Professional", plan2_desc: "O'sayotgan restoranlar", plan2_feat1: "Cheksiz buyurtmalar", plan2_feat2: "Kengaytirilgan dashboard", plan2_feat3: "To'lov integratsiyalari", plan2_feat4: "Birinchi navbatda yordam",
+        plan3_name: "Enterprise", plan3_price: "Shartnoma", plan3_desc: "Ko'p filialli guruhlar", plan3_feat1: "Professionaldagi hammasi", plan3_feat2: "Shaxsiy menejer", plan3_feat3: "Maxsus integratsiyalar", plan3_feat4: "SLA kafolati",
+        popular_badge: "ENG OMMABOP", get_started: "Boshlash", start_trial: "30 kunlik sinov", contact_sales: "Bog'lanish"
+      },
+      ru: {
+        nav_products: "Главная", nav_pricing: "Цены", nav_founder: "Основатель",
+        dashboard_btn: "Регистрация / Войти",
+        hero_title: "SOBER Hospitality",
+        hero_tagline: "Без драмы. Только операции.",
+        hero_sub: "QR-меню, бронирование отелей, расписание персонала и инвентаризация — всё на одной платформе для самых трудолюбивых рестораторов и отельеров Узбекистана.",
+        stat1: "ресторанов и отелей", stat2: "заказов в день", stat3: "время работы, ноль драмы",
+        demo_btn: "Запросить демо", pricing_link: "Смотреть цены →",
+        products_title: "Комплекс SOBER Hospitality",
+        product1_desc: "QR-меню. Цифровые заказы. Без официантов.",
+        product2_desc: "Бронирование. Регистрация. Уборка. Ноль проблем.",
+        product3_desc: "Бронь столов. Автоподтверждение. Полная посадка.",
+        product4_desc: "Учёт запасов. Оповещения. Никогда не заканчивается.",
+        product5_desc: "График персонала. Учёт времени. Без драм с расписанием.",
+        features_title: "Почему операторы выбирают SOBER",
+        feat1_title: "Настройка за минуты", feat1_desc: "Никакого сложного онбординга. Загрузите меню, распечатайте QR-коды — готово.",
+        feat2_title: "UZ • RU • EN", feat2_desc: "Трёхъязычный по умолчанию. Туристы и местные чувствуют себя как дома.",
+        feat3_title: "Аналитика в реальном времени", feat3_desc: "Выручка, популярные блюда, часы пик — всё под рукой.",
+        feat4_title: "Гарантия без драмы", feat4_desc: "99.9% аптайм. Поддержка 24/7. Сломается — быстро починим.",
+        feat5_title: "7 дней бесплатно", feat5_desc: "Полный доступ к тарифу Professional. Без карты. Отмена в любое время. Ноль риска.",
+        pricing_title: "Простые тарифы. Никакой скрытой драмы.",
+        plan1_name: "Старт", plan1_desc: "Для небольших кафе", plan1_feat1: "До 50 заказов/день", plan1_feat2: "Базовая аналитика", plan1_feat3: "Поддержка по email",
+        plan2_name: "Профи", plan2_desc: "Для растущих ресторанов", plan2_feat1: "Безлимитные заказы", plan2_feat2: "Расширенная панель", plan2_feat3: "Интеграция платежей", plan2_feat4: "Приоритетная поддержка",
+        plan3_name: "Корпоративный", plan3_price: "Договорная", plan3_desc: "Сети заведений", plan3_feat1: "Всё из Профи", plan3_feat2: "Персональный менеджер", plan3_feat3: "Кастомные интеграции", plan3_feat4: "Гарантия SLA",
+        popular_badge: "ПОПУЛЯРНО", get_started: "Начать", start_trial: "30 дней бесплатно", contact_sales: "Связаться"
+      }
+    };
+
+    let currentLang = 'en';
+    const langBtns = document.querySelectorAll('.lang-btn');
+    
+    function updateContent(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.dataset.lang === lang) btn.classList.add('active');
+      });
+      currentLang = lang;
+      localStorage.setItem('sober_lang', lang);
+    }
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => updateContent(btn.dataset.lang));
+    });
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab');
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Load saved language
+    const saved = localStorage.getItem('sober_lang') || 'en';
+    updateContent(saved);
+    
+    // Demo button
+    document.querySelectorAll('.btn-primary[href="/demo"]').forEach(btn => {
+      btn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        alert('🎯 SOBER Hospitality Demo\n\nExperience the full suite:\n• MenuFlow — QR ordering\n• StayFlow — Hotel management\n• Zero drama. Just operations.\n\nA representative will contact you shortly.');
+      });
+    });
+  })();
+</script>
+</body>
+</html>

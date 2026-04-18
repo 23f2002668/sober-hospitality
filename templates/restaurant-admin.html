@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>🍽️ Owner Panel | Samarqand Osh Markazi</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f6f3ef;
+      color: #2c241e;
+      line-height: 1.5;
+    }
+
+    /* animations */
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateX(-20px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes cardPop {
+      0% { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .dashboard-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 32px;
+    }
+
+    /* header */
+    .owner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .header-title h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #2c241e;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-title i {
+      color: #b5834a;
+      background: #ede0d4;
+      padding: 12px;
+      border-radius: 20px;
+    }
+
+    .resto-badge {
+      background: white;
+      padding: 8px 22px;
+      border-radius: 60px;
+      font-weight: 500;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+      border: 1px solid #e5d9ce;
+      color: #5a4738;
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+    }
+
+    .lang-btn {
+      background: white;
+      border: 1px solid #ddd0c2;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #3f3227;
+    }
+
+    .lang-btn.active {
+      background: #b5834a;
+      color: white;
+      border-color: #b5834a;
+    }
+
+    /* stats cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 0 15px 30px -10px rgba(0,0,0,0.05);
+      border: 1px solid #f1e8df;
+      animation: cardPop 0.5s ease-out;
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 36px -12px rgba(180, 130, 70, 0.15);
+    }
+
+    .stat-icon {
+      font-size: 2.2rem;
+      color: #b5834a;
+      margin-bottom: 16px;
+    }
+
+    .stat-value {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #1f1812;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      color: #6e5d4e;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* main two columns */
+    .dashboard-main {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* orders panel */
+    .panel {
+      background: white;
+      border-radius: 36px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 35px -8px rgba(0,0,0,0.06);
+      border: 1px solid #efe6dd;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .panel-header h2 {
+      font-size: 1.8rem;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-badge {
+      background: #e73f3f15;
+      color: #c0342c;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      border: 1px solid #e73f3f30;
+    }
+
+    .order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .order-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 1px solid #f0e6dc;
+      animation: slideIn 0.4s ease;
+    }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .order-table {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .order-dishes {
+      color: #6b5848;
+      font-size: 0.95rem;
+    }
+
+    .order-status {
+      padding: 6px 18px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      background: #f3ede6;
+      color: #5f4d3b;
+    }
+
+    .status-preparing { background: #fff1d6; color: #a8681c; }
+    .status-ready { background: #dff0d8; color: #2d6a4f; }
+    .status-served { background: #e2e6ea; color: #41464b; }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .status-btn {
+      background: none;
+      border: 1px solid #d4c4b4;
+      padding: 8px 14px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #3f3227;
+    }
+
+    .status-btn:hover {
+      background: #b5834a;
+      color: white;
+      border-color: #b5834a;
+    }
+
+    /* analytics & quick actions */
+    .analytics-card {
+      background: white;
+      border-radius: 36px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-container {
+      margin: 20px 0 10px;
+      height: 200px;
+    }
+
+    .top-items {
+      margin-top: 28px;
+    }
+
+    .top-item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px dashed #e2d5c9;
+    }
+
+    .menu-manager {
+      background: white;
+      border-radius: 36px;
+      padding: 28px 24px;
+    }
+
+    .menu-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0e6dc;
+    }
+
+    .item-availability {
+      width: 50px;
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .toggle-avail {
+      background: #eae0d6;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .toggle-avail.in-stock {
+      background: #2d6a4f20;
+      color: #1e4a3a;
+      border: 1px solid #2d6a4f40;
+    }
+
+    /* footer revenue summary */
+    .revenue-bar {
+      margin-top: 30px;
+      background: white;
+      border-radius: 60px;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+      border: 1px solid #efe6dd;
+    }
+
+    .revenue-text {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: #2c241e;
+      color: white;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #4f3e32;
+    }
+
+    i {
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <div class="owner-header">
+    <div class="header-title">
+      <h1><i class="fas fa-utensils"></i> <span id="panelTitle">Owner boshqaruvi</span></h1>
+      <div class="resto-badge"><i class="fas fa-store"></i> <span id="restoNameDisplay">Samarqand Osh Markazi</span></div>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="uz">O'zbekcha</button>
+      <button class="lang-btn" data-lang="ru">Русский</button>
+      <button class="lang-btn" data-lang="en">English</button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+      <div class="stat-value" id="todayRevenue">1,245,000</div>
+      <div class="stat-label" id="todayRevenueLabel">Bugungi tushum (so'm)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+      <div class="stat-value" id="totalOrders">34</div>
+      <div class="stat-label" id="totalOrdersLabel">Jami buyurtmalar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-clock"></i></div>
+      <div class="stat-value" id="pendingOrders">7</div>
+      <div class="stat-label" id="pendingOrdersLabel">Kutilayotgan</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-star"></i></div>
+      <div class="stat-value">4.8</div>
+      <div class="stat-label" id="ratingLabel">O'rtacha baho</div>
+    </div>
+  </div>
+
+  <!-- Main content: Orders + Right panel -->
+  <div class="dashboard-main">
+    <!-- LEFT: Live Orders -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-clipboard-list" style="color:#b5834a;"></i> <span id="liveOrdersTitle">Jonli buyurtmalar</span></h2>
+        <span class="live-badge"><i class="fas fa-circle" style="font-size: 0.6rem; color: #2ecc71;"></i> <span id="liveText">real-time</span></span>
+      </div>
+      <div class="order-list" id="orderListContainer">
+        <!-- Orders will be injected by JS -->
+      </div>
+      <div style="margin-top: 24px; text-align: right;">
+        <button class="status-btn" id="refreshOrdersBtn"><i class="fas fa-sync-alt"></i> <span id="refreshText">Yangilash</span></button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Analytics & Quick menu management -->
+    <div>
+      <div class="analytics-card">
+        <h3 style="display: flex; gap: 10px; margin-bottom: 10px;"><i class="fas fa-chart-bar"></i> <span id="popularTitle">Eng mashhur taomlar</span></h3>
+        <div class="chart-container">
+          <canvas id="popularChart"></canvas>
+        </div>
+        <div class="top-items" id="topItemsList">
+          <!-- dynamic top items -->
+        </div>
+      </div>
+      
+      <div class="menu-manager">
+        <h3 style="display: flex; gap: 10px; margin-bottom: 24px;"><i class="fas fa-edit"></i> <span id="menuManagerTitle">Menyu boshqaruvi</span></h3>
+        <div id="menuManagerList">
+          <!-- injected menu items with toggle availability -->
+        </div>
+        <button class="status-btn" style="margin-top: 20px; width: 100%;" id="addItemBtn"><i class="fas fa-plus-circle"></i> <span id="addItemText">Yangi taom qo'shish</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue & action bar -->
+  <div class="revenue-bar">
+    <div>
+      <span class="revenue-text"><i class="fas fa-chart-line"></i> <span id="monthlyRevenueLabel">Oylik tushum:</span> <strong id="monthlyRevenue">12,840,000 so'm</strong></span>
+    </div>
+    <div>
+      <button class="btn-primary" id="exportReportBtn"><i class="fas fa-download"></i> <span id="exportText">Hisobot yuklash</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    "use strict";
+
+    // ---------- 🌍 Multi-language texts ----------
+    const langMap = {
+      uz: {
+        panelTitle: 'Owner boshqaruvi',
+        restoName: 'Samarqand Osh Markazi',
+        todayRevenueLabel: 'Bugungi tushum (so\'m)',
+        totalOrdersLabel: 'Jami buyurtmalar',
+        pendingOrdersLabel: 'Kutilayotgan',
+        ratingLabel: 'O\'rtacha baho',
+        liveOrdersTitle: 'Jonli buyurtmalar',
+        liveText: 'real-time',
+        refreshText: 'Yangilash',
+        popularTitle: 'Eng mashhur taomlar',
+        menuManagerTitle: 'Menyu boshqaruvi',
+        addItemText: 'Yangi taom qo\'shish',
+        monthlyRevenueLabel: 'Oylik tushum:',
+        exportText: 'Hisobot yuklash',
+        statusPrep: 'Tayyorlanmoqda',
+        statusReady: 'Tayyor',
+        statusServed: 'Xizmat qilindi',
+        inStock: 'Sotuvda',
+        outStock: 'Tugagan',
+        topItemToday: 'Bugun',
+        orders: 'ta',
+        table: 'Stol',
+        orderTotal: 'so\'m'
+      },
+      ru: {
+        panelTitle: 'Панель владельца',
+        restoName: 'Самаркандский Ош Центр',
+        todayRevenueLabel: 'Выручка сегодня (сум)',
+        totalOrdersLabel: 'Всего заказов',
+        pendingOrdersLabel: 'Ожидают',
+        ratingLabel: 'Средний рейтинг',
+        liveOrdersTitle: 'Живые заказы',
+        liveText: 'онлайн',
+        refreshText: 'Обновить',
+        popularTitle: 'Популярные блюда',
+        menuManagerTitle: 'Управление меню',
+        addItemText: 'Добавить блюдо',
+        monthlyRevenueLabel: 'Месячная выручка:',
+        exportText: 'Скачать отчёт',
+        statusPrep: 'Готовится',
+        statusReady: 'Готово',
+        statusServed: 'Подано',
+        inStock: 'В наличии',
+        outStock: 'Нет',
+        topItemToday: 'Сегодня',
+        orders: 'зак.',
+        table: 'Стол',
+        orderTotal: 'сум'
+      },
+      en: {
+        panelTitle: 'Owner Dashboard',
+        restoName: 'Samarkand Osh Centre',
+        todayRevenueLabel: 'Today\'s Revenue (UZS)',
+        totalOrdersLabel: 'Total Orders',
+        pendingOrdersLabel: 'Pending',
+        ratingLabel: 'Avg Rating',
+        liveOrdersTitle: 'Live Orders',
+        liveText: 'real-time',
+        refreshText: 'Refresh',
+        popularTitle: 'Most Popular Items',
+        menuManagerTitle: 'Menu Manager',
+        addItemText: 'Add New Dish',
+        monthlyRevenueLabel: 'Monthly Revenue:',
+        exportText: 'Export Report',
+        statusPrep: 'Preparing',
+        statusReady: 'Ready',
+        statusServed: 'Served',
+        inStock: 'In Stock',
+        outStock: 'Out of Stock',
+        topItemToday: 'Today',
+        orders: 'orders',
+        table: 'Table',
+        orderTotal: 'UZS'
+      }
+    };
+
+    let currentLang = 'uz';
+
+    // ---------- Mock Data ----------
+    const menuItems = [
+      { id: 1, nameUz: 'Samarqand Palovi', nameRu: 'Самаркандский Плов', nameEn: 'Samarkand Pilaf', price: 55000, available: true, soldToday: 28 },
+      { id: 2, nameUz: 'Mastava', nameRu: 'Мастава', nameEn: 'Mastava Soup', price: 38000, available: true, soldToday: 16 },
+      { id: 3, nameUz: 'Qozon Kabob', nameRu: 'Казан-Кебаб', nameEn: 'Kazan Kebab', price: 42000, available: true, soldToday: 21 },
+      { id: 4, nameUz: 'Somsa', nameRu: 'Самса', nameEn: 'Samsa', price: 28000, available: false, soldToday: 32 },
+      { id: 5, nameUz: 'Lagʻmon', nameRu: 'Лагман', nameEn: 'Lagman', price: 32000, available: true, soldToday: 14 },
+      { id: 6, nameUz: 'Achchiq-chuchuk', nameRu: 'Аччик-чучук', nameEn: 'Achchik-Chuchuk', price: 25000, available: true, soldToday: 19 }
+    ];
+
+    let orders = [
+      { id: 101, table: 4, items: ['Palov', 'Somsa (2)'], total: 111000, status: 'preparing', time: '5 daqiqa oldin' },
+      { id: 102, table: 7, items: ['Mastava', 'Lagʻmon', 'Choy'], total: 89000, status: 'ready', time: '2 daqiqa oldin' },
+      { id: 103, table: 2, items: ['Qozon Kabob', 'Salat'], total: 67000, status: 'preparing', time: '8 daqiqa oldin' },
+      { id: 104, table: 9, items: ['Somsa (4)', 'Ayron'], total: 42000, status: 'served', time: '15 daqiqa oldin' },
+      { id: 105, table: 5, items: ['Palov', 'Shashlik'], total: 95000, status: 'preparing', time: '1 daqiqa oldin' }
+    ];
+
+    // Stats
+    const stats = {
+      todayRevenue: 1245000,
+      totalOrders: 34,
+      pending: 7,
+      monthlyRevenue: 12840000
+    };
+
+    // ---------- DOM elements ----------
+    const panelTitle = document.getElementById('panelTitle');
+    const restoNameDisplay = document.getElementById('restoNameDisplay');
+    const todayRevenueEl = document.getElementById('todayRevenue');
+    const todayRevenueLabel = document.getElementById('todayRevenueLabel');
+    const totalOrdersEl = document.getElementById('totalOrders');
+    const totalOrdersLabel = document.getElementById('totalOrdersLabel');
+    const pendingOrdersEl = document.getElementById('pendingOrders');
+    const pendingOrdersLabel = document.getElementById('pendingOrdersLabel');
+    const ratingLabel = document.getElementById('ratingLabel');
+    const liveOrdersTitle = document.getElementById('liveOrdersTitle');
+    const liveText = document.getElementById('liveText');
+    const refreshText = document.getElementById('refreshText');
+    const popularTitle = document.getElementById('popularTitle');
+    const menuManagerTitle = document.getElementById('menuManagerTitle');
+    const addItemText = document.getElementById('addItemText');
+    const monthlyRevenueLabel = document.getElementById('monthlyRevenueLabel');
+    const monthlyRevenueSpan = document.getElementById('monthlyRevenue');
+    const exportText = document.getElementById('exportText');
+    
+    const orderListContainer = document.getElementById('orderListContainer');
+    const topItemsList = document.getElementById('topItemsList');
+    const menuManagerList = document.getElementById('menuManagerList');
+
+    let popularChart;
+
+    // ---------- Render functions ----------
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function renderStats() {
+      todayRevenueEl.textContent = formatNumber(stats.todayRevenue);
+      totalOrdersEl.textContent = stats.totalOrders;
+      pendingOrdersEl.textContent = stats.pending;
+      monthlyRevenueSpan.textContent = formatNumber(stats.monthlyRevenue) + " so'm";
+    }
+
+    function renderOrders() {
+      const t = langMap[currentLang];
+      let html = '';
+      const pendingCount = orders.filter(o => o.status !== 'served').length;
+      pendingOrdersEl.textContent = pendingCount;
+      
+      orders.forEach(order => {
+        let statusClass = '';
+        let statusText = '';
+        if (order.status === 'preparing') { statusClass = 'status-preparing'; statusText = t.statusPrep; }
+        else if (order.status === 'ready') { statusClass = 'status-ready'; statusText = t.statusReady; }
+        else { statusClass = 'status-served'; statusText = t.statusServed; }
+
+        const itemsStr = order.items.join(', ');
+        
+        html += `
+          <div class="order-item" data-order-id="${order.id}">
+            <div class="order-info">
+              <span class="order-table">${t.table} ${order.table}</span>
+              <span class="order-dishes">${itemsStr} · ${formatNumber(order.total)} ${t.orderTotal}</span>
+              <small style="color:#8e7a69;">${order.time}</small>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="order-status ${statusClass}">${statusText}</span>
+              <div class="order-actions">
+                ${order.status === 'preparing' ? `<button class="status-btn" data-action="ready" data-id="${order.id}"><i class="fas fa-check"></i> ${t.statusReady}</button>` : ''}
+                ${order.status === 'ready' ? `<button class="status-btn" data-action="serve" data-id="${order.id}"><i class="fas fa-flag-checkered"></i> ${t.statusServed}</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      orderListContainer.innerHTML = html || '<p style="padding:20px;text-align:center;">Buyurtmalar yo\'q</p>';
+    }
+
+    function renderTopItems() {
+      const t = langMap[currentLang];
+      const sorted = [...menuItems].sort((a,b) => b.soldToday - a.soldToday).slice(0,4);
+      let itemsHtml = '';
+      sorted.forEach(item => {
+        const name = currentLang === 'uz' ? item.nameUz : (currentLang === 'ru' ? item.nameRu : item.nameEn);
+        itemsHtml += `<div class="top-item-row"><span>${name}</span><span><strong>${item.soldToday}</strong> ${t.orders}</span></div>`;
+      });
+      topItemsList.innerHTML = itemsHtml;
+
+      // Chart
+      if (popularChart) popularChart.destroy();
+      const ctx = document.getElementById('popularChart').getContext('2d');
+      const labels = sorted.map(it => currentLang === 'uz' ? it.nameUz : (currentLang === 'ru' ? it.nameRu : it.nameEn));
+      popularChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: t.topItemToday,
+            data: sorted.map(it => it.soldToday),
+            backgroundColor: '#b5834a',
+            borderRadius: 10,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function renderMenuManager() {
+      const t = langMap[currentLang];
+      let html = '';
+      menuItems.forEach(item => {
+        const name = currentLang === 'uz' ? item.nameUz : (currentLang === 'ru' ? item.nameRu : item.nameEn);
+        html += `
+          <div class="menu-item-row">
+            <div><strong>${name}</strong><br><small style="color:#7f6b5a;">${formatNumber(item.price)} so'm</small></div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="item-availability">${item.available ? '🟢' : '🔴'}</span>
+              <button class="toggle-avail ${item.available ? 'in-stock' : ''}" data-id="${item.id}">
+                ${item.available ? t.inStock : t.outStock}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      menuManagerList.innerHTML = html;
+    }
+
+    function updateUITexts() {
+      const t = langMap[currentLang];
+      panelTitle.textContent = t.panelTitle;
+      restoNameDisplay.textContent = t.restoName;
+      todayRevenueLabel.textContent = t.todayRevenueLabel;
+      totalOrdersLabel.textContent = t.totalOrdersLabel;
+      pendingOrdersLabel.textContent = t.pendingOrdersLabel;
+      ratingLabel.textContent = t.ratingLabel;
+      liveOrdersTitle.textContent = t.liveOrdersTitle;
+      liveText.textContent = t.liveText;
+      refreshText.textContent = t.refreshText;
+      popularTitle.textContent = t.popularTitle;
+      menuManagerTitle.textContent = t.menuManagerTitle;
+      addItemText.textContent = t.addItemText;
+      monthlyRevenueLabel.textContent = t.monthlyRevenueLabel;
+      exportText.textContent = t.exportText;
+      monthlyRevenueSpan.textContent = formatNumber(stats.monthlyRevenue) + " so'm";
+      
+      renderOrders();
+      renderTopItems();
+      renderMenuManager();
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.dataset.lang === lang) btn.classList.add('active');
+      });
+      updateUITexts();
+    }
+
+    // Event handlers
+    function handleOrderAction(e) {
+      const btn = e.target.closest('[data-action]');
+      if(!btn) return;
+      const action = btn.dataset.action;
+      const orderId = parseInt(btn.dataset.id);
+      const order = orders.find(o => o.id === orderId);
+      if(!order) return;
+      
+      if(action === 'ready') {
+        order.status = 'ready';
+        order.time = 'hozir';
+      } else if(action === 'serve') {
+        order.status = 'served';
+        order.time = 'served';
+        stats.todayRevenue += order.total;
+        stats.totalOrders += 1;
+        stats.pending = orders.filter(o => o.status !== 'served').length;
+        stats.monthlyRevenue += order.total;
+        renderStats();
+      }
+      renderOrders();
+      pendingOrdersEl.textContent = orders.filter(o => o.status !== 'served').length;
+    }
+
+    function handleToggleAvailability(e) {
+      const btn = e.target.closest('.toggle-avail');
+      if(!btn) return;
+      const id = parseInt(btn.dataset.id);
+      const item = menuItems.find(it => it.id === id);
+      if(item) {
+        item.available = !item.available;
+        renderMenuManager();
+        // optionally update chart if needed (not critical)
+      }
+    }
+
+    function refreshData() {
+      // simulate refresh
+      orders = orders.map(o => {
+        if (o.status === 'preparing' && Math.random() > 0.7) o.status = 'ready';
+        return o;
+      });
+      stats.pending = orders.filter(o => o.status !== 'served').length;
+      renderOrders();
+      pendingOrdersEl.textContent = stats.pending;
+    }
+
+    // Initialize
+    function init() {
+      renderStats();
+      setLanguage('uz');
+      
+      // Event delegation
+      orderListContainer.addEventListener('click', handleOrderAction);
+      menuManagerList.addEventListener('click', handleToggleAvailability);
+      
+      document.getElementById('refreshOrdersBtn').addEventListener('click', refreshData);
+      
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+      });
+      
+      document.getElementById('addItemBtn').addEventListener('click', () => {
+        alert(currentLang === 'uz' ? 'Yangi taom qo\'shish (demo)' : (currentLang === 'ru' ? 'Добавить блюдо (демо)' : 'Add new dish (demo)'));
+      });
+      
+      document.getElementById('exportReportBtn').addEventListener('click', () => {
+        alert(currentLang === 'uz' ? 'Hisobot tayyorlanmoqda...' : (currentLang === 'ru' ? 'Отчёт готовится...' : 'Report is being prepared...'));
+      });
+    }
+
+    init();
+  })();
+</script>
+</body>
+</html>
